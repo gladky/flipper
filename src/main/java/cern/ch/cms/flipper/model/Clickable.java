@@ -5,11 +5,11 @@ import org.apache.log4j.Logger;
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 
-public class Clickable extends FlipperObject {
+public abstract class Clickable extends FlipperObject {
 
 	private final int timeoutStep;
 	private int timeoutProgress;
-	private Button button;
+	private final Button button;
 
 	private static final Logger logger = Logger.getLogger(Clickable.class);
 
@@ -22,7 +22,7 @@ public class Clickable extends FlipperObject {
 
 	@Override
 	protected boolean canSend() {
-
+		
 		if (!button.isActivated()) {
 			button.activate();
 		}

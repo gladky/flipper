@@ -91,4 +91,10 @@ public class Switch extends FlipperObject {
 		}
 	}
 
+	@Override
+	protected void finished() {
+		logger.debug(name + " finished assemblying event");
+		return;
+	}
+
 }

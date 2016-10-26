@@ -19,8 +19,6 @@ public abstract class FlipperObject extends NamedObject {
 	/** Successors of this flipper object */
 	private final List<FlipperObject> successors;
 
-	/** Predecessors of this flipper object */
-	private final List<FlipperObject> predecessors;
 
 	/** Data currently in this object */
 	protected final CircularFifoQueue<Data> queue;
@@ -33,7 +31,6 @@ public abstract class FlipperObject extends NamedObject {
 		super(name);
 		this.progressStep = progressStep;
 		this.successors = new ArrayList<FlipperObject>();
-		this.predecessors = new ArrayList<FlipperObject>();
 		this.capacity = capacity;
 		this.queue = new CircularFifoQueue<Data>(capacity);
 	}
@@ -71,12 +68,20 @@ public abstract class FlipperObject extends NamedObject {
 			progress = stepImplementation();
 			if (progress > 99) {
 
+				finished();
+
 				if (canSend()) {
 					sendData();
 					progress = 0;
 				}
 			}
 		}
+	}
+
+	protected void finished() {
+		Data data = queue.peek();
+		logger.debug(name + " finished with " + data);
+		return;
 	}
 
 	protected boolean canSend() {
@@ -88,8 +93,9 @@ public abstract class FlipperObject extends NamedObject {
 				allAccept = false;
 			}
 		}
-		if (!allAccept)
+		if (!allAccept){
 			logger.info(name + " cannot pass the data to successor");
+		}
 		return allAccept;
 
 	}
@@ -108,10 +114,6 @@ public abstract class FlipperObject extends NamedObject {
 
 	public List<FlipperObject> getSuccessors() {
 		return successors;
-	}
-
-	public List<FlipperObject> getPredecessors() {
-		return predecessors;
 	}
 
 }

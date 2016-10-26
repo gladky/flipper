@@ -11,50 +11,95 @@ public class FlipperGame {
 
 	private static final Logger logger = Logger.getLogger(FlipperGame.class);
 
-	private final GameController controller = new GameController();
-	private final FlipperObjectFactory factory = new FlipperObjectFactory(controller);
+	private final GameController controller;
+	private final FlipperObjectFactory factory;
 
-	private final Button buttonLZ = factory.createButton("button Level0");
-	private final Button buttonLeft1 = factory.createButton("button L1");
-	private final Button buttonLeft2 = factory.createButton("button L2");
-	private final Button buttonLeft3 = factory.createButton("button L3");
-	private final Button buttonRight1 = factory.createButton("button R1");
-	private final Button buttonRight2 = factory.createButton("button R2");
-	private final Button buttonRight3 = factory.createButton("button R3");
+	private final Button buttonLZ;
+	private final Button buttonLeft1;
+	private final Button buttonLeft2;
+	private final Button buttonLeft3;
+	private final Button buttonRight1;
+	private final Button buttonRight2;
+	private final Button buttonRight3;
 
-	private final FlipperObject storage = factory.createStorage();
+	private final FlipperObject storage;
 
-	private final FlipperObject link1 = factory.createLink("  left to buffer link");
-	private final FlipperObject link2 = factory.createLink(" mleft to buffer link");
-	private final FlipperObject link3 = factory.createLink("mright to buffer link");
-	private final FlipperObject link4 = factory.createLink(" right to buffer link");
+	private final FlipperObject link1;
+	private final FlipperObject link2;
+	private final FlipperObject link3;
+	private final FlipperObject link4;
 
-	private final FlipperObject buffer1 = factory.createBuffer("  left buffer", buttonLZ);
-	private final FlipperObject buffer2 = factory.createBuffer(" mleft buffer", buttonLZ);
-	private final FlipperObject buffer3 = factory.createBuffer("mright buffer", buttonLZ);
-	private final FlipperObject buffer4 = factory.createBuffer(" right buffer", buttonLZ);
+	private final FlipperObject buffer1;
+	private final FlipperObject buffer2;
+	private final FlipperObject buffer3;
+	private final FlipperObject buffer4;
 
-	private final FlipperObject link05 = factory.createLink("  left to switch link");
-	private final FlipperObject link06 = factory.createLink(" mleft to switch link");
-	private final FlipperObject link07 = factory.createLink("mright to switch link");
-	private final FlipperObject link08 = factory.createLink(" right to switch link");
+	private final FlipperObject link05;
+	private final FlipperObject link06;
+	private final FlipperObject link07;
+	private final FlipperObject link08;
 
-	private final FlipperObject link09 = factory.createLink(" left to bufu link");
-	private final FlipperObject link10 = factory.createLink("right to bufu link");
+	private final FlipperObject link09;
+	private final FlipperObject link10;
 
-	private final FlipperObject bufuL1 = factory.createBUFU("bufu L1", buttonLeft1);
-	private final FlipperObject bufuL2 = factory.createBUFU("bufu L2", buttonLeft2);
-	private final FlipperObject bufuL3 = factory.createBUFU("bufu L3", buttonLeft3);
-	private final FlipperObject bufuR1 = factory.createBUFU("bufu R1", buttonRight1);
-	private final FlipperObject bufuR2 = factory.createBUFU("bufu R2", buttonRight2);
-	private final FlipperObject bufuR3 = factory.createBUFU("bufu R3", buttonRight3);
+	private final FlipperObject bufuL1;
+	private final FlipperObject bufuL2;
+	private final FlipperObject bufuL3;
+	private final FlipperObject bufuR1;
+	private final FlipperObject bufuR2;
+	private final FlipperObject bufuR3;
 
-	private final FlipperObject link11 = factory.createLink(" left to storage link");
-	private final FlipperObject link12 = factory.createLink("right to storage link");
+	private final FlipperObject link11;
+	private final FlipperObject link12;
 
-	private final FlipperObject switch_ = factory.createSwitch("switch");
+	private final FlipperObject switch_;
 
 	public FlipperGame() {
+
+		controller = new GameController();
+		factory = new FlipperObjectFactory(controller);
+
+		buttonLZ = factory.createButton("button Level0");
+		buttonLeft1 = factory.createButton("button L1");
+		buttonLeft2 = factory.createButton("button L2");
+		buttonLeft3 = factory.createButton("button L3");
+		buttonRight1 = factory.createButton("button R1");
+		buttonRight2 = factory.createButton("button R2");
+		buttonRight3 = factory.createButton("button R3");
+
+
+		link1 = factory.createLink("  left to buffer link");
+		link2 = factory.createLink(" mleft to buffer link");
+		link3 = factory.createLink("mright to buffer link");
+		link4 = factory.createLink(" right to buffer link");
+
+		buffer1 = factory.createBuffer("  left buffer", buttonLZ);
+		buffer2 = factory.createBuffer(" mleft buffer", buttonLZ);
+		buffer3 = factory.createBuffer("mright buffer", buttonLZ);
+		buffer4 = factory.createBuffer(" right buffer", buttonLZ);
+
+		link05 = factory.createLink("  left to switch link");
+		link06 = factory.createLink(" mleft to switch link");
+		link07 = factory.createLink("mright to switch link");
+		link08 = factory.createLink(" right to switch link");
+		
+		switch_ = factory.createSwitch("switch");
+
+		link09 = factory.createLink(" left to bufu link");
+		link10 = factory.createLink("right to bufu link");
+
+		bufuL1 = factory.createBUFU("bufu L1", buttonLeft1);
+		bufuL2 = factory.createBUFU("bufu L2", buttonLeft2);
+		bufuL3 = factory.createBUFU("bufu L3", buttonLeft3);
+		bufuR1 = factory.createBUFU("bufu R1", buttonRight1);
+		bufuR2 = factory.createBUFU("bufu R2", buttonRight2);
+		bufuR3 = factory.createBUFU("bufu R3", buttonRight3);
+		
+		link11 = factory.createLink(" left to storage link");
+		link12 = factory.createLink("right to storage link");
+
+		storage = factory.createStorage();
+		
 
 		link1.getSuccessors().add(buffer1);
 		link2.getSuccessors().add(buffer2);
