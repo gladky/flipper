@@ -20,7 +20,7 @@ public class FlipperObjectFactory {
 
 	public FlipperObject createLink(String name) {
 		String uniqueName = getUniqueName(name);
-		FlipperObject link = new Link(uniqueName, 3, 25);
+		FlipperObject link = new Link(uniqueName, 1, 25);
 		model.getFlipperObjects().add(link);
 		return link;
 	}

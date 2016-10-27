@@ -12,4 +12,9 @@ public abstract class Data {
 		return name;
 	}
 
+	@Override
+	public String toString() {
+		return "Data [name=" + name + "]";
+	}
+
 }

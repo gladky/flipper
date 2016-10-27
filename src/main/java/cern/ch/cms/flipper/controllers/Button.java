@@ -30,7 +30,7 @@ public class Button extends NamedObject {
 		if (activated) {
 			state = true;
 		} else {
-			logger.info("Ignoring button pressed");
+			logger.debug("Ignoring button pressed");
 		}
 	}
 
@@ -48,7 +48,7 @@ public class Button extends NamedObject {
 
 	public void doStep() {
 		if (deactivateRequest) {
-			logger.info("Button deactivated");
+			logger.debug("Button deactivated");
 			activated = false;
 			state = false;
 			deactivateRequest = false;

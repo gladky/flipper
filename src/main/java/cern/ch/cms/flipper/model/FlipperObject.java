@@ -19,11 +19,12 @@ public abstract class FlipperObject extends NamedObject {
 	/** Successors of this flipper object */
 	private final List<FlipperObject> successors;
 
-
 	/** Data currently in this object */
 	protected final CircularFifoQueue<Data> queue;
 
 	private final int capacity;
+
+	private boolean awaiting;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
 
@@ -33,6 +34,7 @@ public abstract class FlipperObject extends NamedObject {
 		this.successors = new ArrayList<FlipperObject>();
 		this.capacity = capacity;
 		this.queue = new CircularFifoQueue<Data>(capacity);
+		this.setBusy(false);
 	}
 
 	/** Can accept more data */
@@ -47,11 +49,12 @@ public abstract class FlipperObject extends NamedObject {
 
 	/** Get the data */
 	public boolean insert(Data data) {
-		if (queue.isFull()) {
+		if (!canAccept()) {
 			return false;
 		} else {
 			logger.debug(name + " received the data " + data.getName());
 			queue.add(data);
+			awaiting = false;
 			return true;
 		}
 	}
@@ -93,7 +96,7 @@ public abstract class FlipperObject extends NamedObject {
 				allAccept = false;
 			}
 		}
-		if (!allAccept){
+		if (!allAccept) {
 			logger.info(name + " cannot pass the data to successor");
 		}
 		return allAccept;
@@ -114,6 +117,14 @@ public abstract class FlipperObject extends NamedObject {
 
 	public List<FlipperObject> getSuccessors() {
 		return successors;
+	}
+
+	public boolean isBusy() {
+		return awaiting;
+	}
+
+	public void setBusy(boolean busy) {
+		this.awaiting = busy;
 	}
 
 }

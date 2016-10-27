@@ -64,6 +64,8 @@ public class Switch extends FlipperObject {
 
 	private FlipperObject findBUFUSuccesor(FlipperObject successor) {
 
+		logger.info("Finding for BUFU in " + successor.getName());
+
 		if (successor instanceof BUFU) {
 			return successor;
 		} else {
@@ -83,8 +85,9 @@ public class Switch extends FlipperObject {
 		for (FlipperObject successor : getSuccessors()) {
 
 			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			if (bufuSuccessor.canAccept()) {
+			if (bufuSuccessor.canAccept() && !bufuSuccessor.isBusy()) {
 				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
+				bufuSuccessor.setBusy(true);
 				successor.insert(data);
 				return;
 			}
