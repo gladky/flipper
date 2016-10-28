@@ -1,15 +1,15 @@
 package cern.ch.cms.flipper.model;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.log4j.Logger;
 
+import cern.ch.cms.flipper.SimpleFifoQueue;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Event;
 
 public class Switch extends FlipperObject {
 
 	/** Data currently in this object */
-	protected final CircularFifoQueue<Event> outputQueue;
+	protected final SimpleFifoQueue outputQueue;
 
 	private static final Logger logger = Logger.getLogger(Switch.class);
 
@@ -18,7 +18,7 @@ public class Switch extends FlipperObject {
 		// arg 2nd: switch has always capacity of processing 4 frangents
 		// arg 3nd: switch is very fast so step is big
 		super(name, 4, 50);
-		this.outputQueue = new CircularFifoQueue<Event>(1);
+		this.outputQueue = new SimpleFifoQueue(1);
 	}
 
 	@Override
@@ -64,6 +64,8 @@ public class Switch extends FlipperObject {
 
 	private FlipperObject findBUFUSuccesor(FlipperObject successor) {
 
+		logger.info("Finding for BUFU in " + successor.getName());
+
 		if (successor instanceof BUFU) {
 			return successor;
 		} else {
@@ -83,8 +85,9 @@ public class Switch extends FlipperObject {
 		for (FlipperObject successor : getSuccessors()) {
 
 			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			if (bufuSuccessor.canAccept()) {
+			if (bufuSuccessor.canAccept() && !bufuSuccessor.isBusy()) {
 				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
+				bufuSuccessor.setBusy(true);
 				successor.insert(data);
 				return;
 			}

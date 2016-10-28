@@ -144,37 +144,37 @@ public class FlipperGame {
 	}
 
 	public void pressButtonLZ() {
-		logger.info("LevelZero button pressed");
+		logger.debug("LevelZero button pressed");
 		buttonLZ.press();
 	}
 
 	public void pressButtonL1() {
-		logger.info("Button L1 pressed");
+		logger.debug("Button L1 pressed");
 		buttonLeft1.press();
 	}
 
 	public void pressButtonL2() {
-		logger.info("Button L2 pressed");
+		logger.debug("Button L2 pressed");
 		buttonLeft2.press();
 	}
 
 	public void pressButtonL3() {
-		logger.info("Button L3 pressed");
+		logger.debug("Button L3 pressed");
 		buttonLeft3.press();
 	}
 
 	public void pressButtonR1() {
-		logger.info("Button R1 pressed");
+		logger.debug("Button R1 pressed");
 		buttonRight1.press();
 	}
 
 	public void pressButtonR2() {
-		logger.info("Button R2 pressed");
+		logger.debug("Button R2 pressed");
 		buttonRight2.press();
 	}
 
 	public void pressButtonR3() {
-		logger.info("Button R3 pressed");
+		logger.debug("Button R3 pressed");
 		buttonRight3.press();
 	}
 

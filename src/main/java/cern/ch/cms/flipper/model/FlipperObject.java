@@ -3,9 +3,9 @@ package cern.ch.cms.flipper.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.log4j.Logger;
 
+import cern.ch.cms.flipper.SimpleFifoQueue;
 import cern.ch.cms.flipper.event.Data;
 
 public abstract class FlipperObject extends NamedObject {
@@ -19,11 +19,12 @@ public abstract class FlipperObject extends NamedObject {
 	/** Successors of this flipper object */
 	private final List<FlipperObject> successors;
 
-
 	/** Data currently in this object */
-	protected final CircularFifoQueue<Data> queue;
+	protected final SimpleFifoQueue queue;
 
 	private final int capacity;
+
+	private boolean awaiting;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
 
@@ -32,7 +33,8 @@ public abstract class FlipperObject extends NamedObject {
 		this.progressStep = progressStep;
 		this.successors = new ArrayList<FlipperObject>();
 		this.capacity = capacity;
-		this.queue = new CircularFifoQueue<Data>(capacity);
+		this.queue = new SimpleFifoQueue(capacity);
+		this.setBusy(false);
 	}
 
 	/** Can accept more data */
@@ -47,11 +49,12 @@ public abstract class FlipperObject extends NamedObject {
 
 	/** Get the data */
 	public boolean insert(Data data) {
-		if (queue.isFull()) {
+		if (!canAccept()) {
 			return false;
 		} else {
 			logger.debug(name + " received the data " + data.getName());
 			queue.add(data);
+			awaiting = false;
 			return true;
 		}
 	}
@@ -93,7 +96,7 @@ public abstract class FlipperObject extends NamedObject {
 				allAccept = false;
 			}
 		}
-		if (!allAccept){
+		if (!allAccept) {
 			logger.info(name + " cannot pass the data to successor");
 		}
 		return allAccept;
@@ -102,6 +105,7 @@ public abstract class FlipperObject extends NamedObject {
 
 	protected void sendData() {
 		Data data = queue.poll();
+		logger.trace(name + " removing data " + data.getName() + " from queue, now size is: " + queue.size());
 
 		for (FlipperObject successor : successors) {
 			successor.insert(data);
@@ -114,6 +118,14 @@ public abstract class FlipperObject extends NamedObject {
 
 	public List<FlipperObject> getSuccessors() {
 		return successors;
+	}
+
+	public boolean isBusy() {
+		return awaiting;
+	}
+
+	public void setBusy(boolean busy) {
+		this.awaiting = busy;
 	}
 
 }
