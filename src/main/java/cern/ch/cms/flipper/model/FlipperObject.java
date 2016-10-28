@@ -3,9 +3,9 @@ package cern.ch.cms.flipper.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.log4j.Logger;
 
+import cern.ch.cms.flipper.SimpleFifoQueue;
 import cern.ch.cms.flipper.event.Data;
 
 public abstract class FlipperObject extends NamedObject {
@@ -20,7 +20,7 @@ public abstract class FlipperObject extends NamedObject {
 	private final List<FlipperObject> successors;
 
 	/** Data currently in this object */
-	protected final CircularFifoQueue<Data> queue;
+	protected final SimpleFifoQueue queue;
 
 	private final int capacity;
 
@@ -33,7 +33,7 @@ public abstract class FlipperObject extends NamedObject {
 		this.progressStep = progressStep;
 		this.successors = new ArrayList<FlipperObject>();
 		this.capacity = capacity;
-		this.queue = new CircularFifoQueue<Data>(capacity);
+		this.queue = new SimpleFifoQueue(capacity);
 		this.setBusy(false);
 	}
 
