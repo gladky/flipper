@@ -105,6 +105,7 @@ public abstract class FlipperObject extends NamedObject {
 
 	protected void sendData() {
 		Data data = queue.poll();
+		logger.trace(name + " removing data " + data.getName() + " from queue, now size is: " + queue.size());
 
 		for (FlipperObject successor : successors) {
 			successor.insert(data);
