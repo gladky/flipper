@@ -28,9 +28,9 @@ public class FlipperGameTest {
 
 		flipperGame.generateNewFragments();
 		flipperGame.doSteps(stepsToLZ);
-		flipperGame.pressButtonLZ();
+		flipperGame.pressButtonLevel1();
 		flipperGame.doSteps(stepsToLX);
-		flipperGame.pressButtonL1();
+		flipperGame.pressButtonHLT_L1();
 		flipperGame.doSteps(stepsToStorage);
 
 	}
@@ -56,7 +56,7 @@ public class FlipperGameTest {
 
 		flipperGame.generateNewFragments();
 		flipperGame.doSteps(stepsToLZAvg);
-		flipperGame.pressButtonLZ();
+		flipperGame.pressButtonLevel1();
 		flipperGame.doSteps(stepsLZToLXAvg);
 
 		Assert.assertEquals(1, flipperGame.getBufuL1().queue.size());
@@ -107,13 +107,13 @@ public class FlipperGameTest {
 				// 4 steps for link to process data
 				flipperGame.generateNewFragments();
 			}
-			flipperGame.pressButtonLZ();
-			flipperGame.pressButtonL1();
-			flipperGame.pressButtonL2();
-			flipperGame.pressButtonL3();
-			flipperGame.pressButtonR1();
-			flipperGame.pressButtonR2();
-			flipperGame.pressButtonR3();
+			flipperGame.pressButtonLevel1();
+			flipperGame.pressButtonHLT_L1();
+			flipperGame.pressButtonHLT_L2();
+			flipperGame.pressButtonHLT_L3();
+			flipperGame.pressButtonHLT_R1();
+			flipperGame.pressButtonHLT_R2();
+			flipperGame.pressButtonHLT_R3();
 			flipperGame.doStep();
 			logger.info("Step " + i + " ------------------------------ step " + i);
 		}

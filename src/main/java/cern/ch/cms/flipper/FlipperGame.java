@@ -14,13 +14,13 @@ public class FlipperGame {
 	private final GameController controller;
 	private final FlipperObjectFactory factory;
 
-	private final Button buttonLZ;
-	private final Button buttonLeft1;
-	private final Button buttonLeft2;
-	private final Button buttonLeft3;
-	private final Button buttonRight1;
-	private final Button buttonRight2;
-	private final Button buttonRight3;
+	private final Button buttonL1;
+	private final Button buttonHLT_L1;
+	private final Button buttonHLT_L2;
+	private final Button buttonHLT_L3;
+	private final Button buttonHLT_R1;
+	private final Button buttonHLT_R2;
+	private final Button buttonHLT_R3;
 
 	private final FlipperObject storage;
 
@@ -59,47 +59,45 @@ public class FlipperGame {
 		controller = new GameController();
 		factory = new FlipperObjectFactory(controller);
 
-		buttonLZ = factory.createButton("button Level0");
-		buttonLeft1 = factory.createButton("button L1");
-		buttonLeft2 = factory.createButton("button L2");
-		buttonLeft3 = factory.createButton("button L3");
-		buttonRight1 = factory.createButton("button R1");
-		buttonRight2 = factory.createButton("button R2");
-		buttonRight3 = factory.createButton("button R3");
-
+		buttonL1 = factory.createButton("button Level0");
+		buttonHLT_L1 = factory.createButton("button L1");
+		buttonHLT_L2 = factory.createButton("button L2");
+		buttonHLT_L3 = factory.createButton("button L3");
+		buttonHLT_R1 = factory.createButton("button R1");
+		buttonHLT_R2 = factory.createButton("button R2");
+		buttonHLT_R3 = factory.createButton("button R3");
 
 		link1 = factory.createLink("  left to buffer link");
 		link2 = factory.createLink(" mleft to buffer link");
 		link3 = factory.createLink("mright to buffer link");
 		link4 = factory.createLink(" right to buffer link");
 
-		buffer1 = factory.createBuffer("  left buffer", buttonLZ);
-		buffer2 = factory.createBuffer(" mleft buffer", buttonLZ);
-		buffer3 = factory.createBuffer("mright buffer", buttonLZ);
-		buffer4 = factory.createBuffer(" right buffer", buttonLZ);
+		buffer1 = factory.createBuffer("  left buffer", buttonL1);
+		buffer2 = factory.createBuffer(" mleft buffer", buttonL1);
+		buffer3 = factory.createBuffer("mright buffer", buttonL1);
+		buffer4 = factory.createBuffer(" right buffer", buttonL1);
 
 		link05 = factory.createLink("  left to switch link");
 		link06 = factory.createLink(" mleft to switch link");
 		link07 = factory.createLink("mright to switch link");
 		link08 = factory.createLink(" right to switch link");
-		
+
 		switch_ = factory.createSwitch("switch");
 
 		link09 = factory.createLink(" left to bufu link");
 		link10 = factory.createLink("right to bufu link");
 
-		bufuL1 = factory.createBUFU("bufu L1", buttonLeft1);
-		bufuL2 = factory.createBUFU("bufu L2", buttonLeft2);
-		bufuL3 = factory.createBUFU("bufu L3", buttonLeft3);
-		bufuR1 = factory.createBUFU("bufu R1", buttonRight1);
-		bufuR2 = factory.createBUFU("bufu R2", buttonRight2);
-		bufuR3 = factory.createBUFU("bufu R3", buttonRight3);
-		
+		bufuL1 = factory.createBUFU("bufu L1", buttonHLT_L1);
+		bufuL2 = factory.createBUFU("bufu L2", buttonHLT_L2);
+		bufuL3 = factory.createBUFU("bufu L3", buttonHLT_L3);
+		bufuR1 = factory.createBUFU("bufu R1", buttonHLT_R1);
+		bufuR2 = factory.createBUFU("bufu R2", buttonHLT_R2);
+		bufuR3 = factory.createBUFU("bufu R3", buttonHLT_R3);
+
 		link11 = factory.createLink(" left to storage link");
 		link12 = factory.createLink("right to storage link");
 
 		storage = factory.createStorage();
-		
 
 		link1.getSuccessors().add(buffer1);
 		link2.getSuccessors().add(buffer2);
@@ -143,39 +141,39 @@ public class FlipperGame {
 
 	}
 
-	public void pressButtonLZ() {
-		logger.debug("LevelZero button pressed");
-		buttonLZ.press();
+	public void pressButtonLevel1() {
+		logger.debug("Level 1 button pressed");
+		buttonL1.press();
 	}
 
-	public void pressButtonL1() {
+	public void pressButtonHLT_L1() {
 		logger.debug("Button L1 pressed");
-		buttonLeft1.press();
+		buttonHLT_L1.press();
 	}
 
-	public void pressButtonL2() {
+	public void pressButtonHLT_L2() {
 		logger.debug("Button L2 pressed");
-		buttonLeft2.press();
+		buttonHLT_L2.press();
 	}
 
-	public void pressButtonL3() {
+	public void pressButtonHLT_L3() {
 		logger.debug("Button L3 pressed");
-		buttonLeft3.press();
+		buttonHLT_L3.press();
 	}
 
-	public void pressButtonR1() {
+	public void pressButtonHLT_R1() {
 		logger.debug("Button R1 pressed");
-		buttonRight1.press();
+		buttonHLT_R1.press();
 	}
 
-	public void pressButtonR2() {
+	public void pressButtonHLT_R2() {
 		logger.debug("Button R2 pressed");
-		buttonRight2.press();
+		buttonHLT_R2.press();
 	}
 
-	public void pressButtonR3() {
+	public void pressButtonHLT_R3() {
 		logger.debug("Button R3 pressed");
-		buttonRight3.press();
+		buttonHLT_R3.press();
 	}
 
 	public GameController getController() {
