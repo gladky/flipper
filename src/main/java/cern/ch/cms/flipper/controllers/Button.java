@@ -8,50 +8,52 @@ public class Button extends NamedObject {
 
 	private static final Logger logger = Logger.getLogger(Button.class);
 
-	private boolean activated;
+	/** Only when enabled pressing will be accepted */
+	private boolean enabled;
 
-	private boolean state;
+	/** pressed or not */
+	private boolean pressed;
 
-	private boolean deactivateRequest;
+	private boolean disableRequest;
 
 	public Button(String name) {
 		super(name);
-		this.activated = false;
-		this.state = false;
-		this.deactivateRequest = false;
+		this.enabled = false;
+		this.pressed = false;
+		this.disableRequest = false;
 	}
 
-	public void activate() {
-		activated = true;
-		state = false;
+	public void enable() {
+		enabled = true;
+		pressed = false;
 	}
 
 	public void press() {
-		if (activated) {
-			state = true;
+		if (enabled) {
+			pressed = true;
 		} else {
 			logger.debug("Ignoring button pressed");
 		}
 	}
 
-	public boolean getState() {
-		return this.state;
+	public boolean isPressed() {
+		return this.pressed;
 	}
 
-	public void deactivate() {
-		deactivateRequest = true;
+	public void disable() {
+		disableRequest = true;
 	}
 
-	public boolean isActivated() {
-		return activated;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	public void doStep() {
-		if (deactivateRequest) {
+		if (disableRequest) {
 			logger.debug("Button deactivated");
-			activated = false;
-			state = false;
-			deactivateRequest = false;
+			enabled = false;
+			pressed = false;
+			disableRequest = false;
 		}
 	}
 

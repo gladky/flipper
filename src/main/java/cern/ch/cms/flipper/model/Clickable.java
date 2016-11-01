@@ -23,16 +23,16 @@ public abstract class Clickable extends FlipperObject {
 	@Override
 	protected boolean canSend() {
 		
-		if (!button.isActivated()) {
-			button.activate();
+		if (!button.isEnabled()) {
+			button.enable();
 		}
 
-		boolean pressed = button.getState();
+		boolean pressed = button.isPressed();
 
 		if (pressed) {
 			logger.info(name + " accepted the data " + queue.peek().getName());
 			this.timeoutProgress = 0;
-			this.button.deactivate();
+			this.button.disable();
 			return super.canSend();
 		} else {
 			this.timeoutProgress += timeoutStep;
