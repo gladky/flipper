@@ -51,12 +51,21 @@ public class Switch extends FlipperObject {
 	@Override
 	protected boolean canSend() {
 
+		logger.debug(name + " looking for bufu successor");
 		boolean atLeastOneAccept = false;
 		for (FlipperObject successor : getSuccessors()) {
-			boolean accept = successor.canAccept();
-			if (accept) {
+
+			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
+			logger.debug(name + " Found Bufu successor " + bufuSuccessor.name + ", will now verify if not busy");
+			if (!bufuSuccessor.isBusy() && successor.canAccept()) {
 				atLeastOneAccept = true;
+				logger.info(name + " can send event, available bufu successor: " + bufuSuccessor.name);
+				break;
 			}
+		}
+
+		if (!atLeastOneAccept) {
+			logger.info("There is no BUFU avaialble right now");
 		}
 		return atLeastOneAccept;
 
@@ -64,7 +73,7 @@ public class Switch extends FlipperObject {
 
 	private FlipperObject findBUFUSuccesor(FlipperObject successor) {
 
-		logger.info("Finding for BUFU in " + successor.getName());
+		logger.debug("Looking for BUFU, checking " + successor.getName());
 
 		if (successor instanceof BUFU) {
 			return successor;
@@ -85,7 +94,7 @@ public class Switch extends FlipperObject {
 		for (FlipperObject successor : getSuccessors()) {
 
 			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			if (bufuSuccessor.canAccept() && !bufuSuccessor.isBusy()) {
+			if (!bufuSuccessor.isBusy()) {
 				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
 				bufuSuccessor.setBusy(true);
 				successor.insert(data);

@@ -22,7 +22,8 @@ public abstract class Clickable extends FlipperObject {
 
 	@Override
 	protected boolean canSend() {
-		
+
+		/* when clickable wants to send data, button becomes enabled */
 		if (!button.isEnabled()) {
 			button.enable();
 		}

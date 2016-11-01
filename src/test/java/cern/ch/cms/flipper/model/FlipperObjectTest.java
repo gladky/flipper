@@ -2,10 +2,10 @@ package cern.ch.cms.flipper.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
+import cern.ch.cms.flipper.event.Event;
 import cern.ch.cms.flipper.event.Fragment;
 
 public class FlipperObjectTest {
@@ -13,6 +13,9 @@ public class FlipperObjectTest {
 	@Test
 	public void acceptTest() {
 		FlipperObject link = new Link("test-link", 1, 25);
+		FlipperObject storage = new Storage("[storage]");
+		link.getSuccessors().add(storage);
+
 		Data f1 = new Fragment();
 		link.insert(f1);
 		Assert.assertEquals(false, link.canAccept());
@@ -40,6 +43,8 @@ public class FlipperObjectTest {
 	@Test
 	public void forceInsertTest() {
 		FlipperObject link = new Link("test-link", 1, 25);
+		FlipperObject storage = new Storage("[storage]");
+		link.getSuccessors().add(storage);
 		Data f1 = new Fragment();
 		Data f2 = new Fragment();
 
@@ -53,5 +58,71 @@ public class FlipperObjectTest {
 
 	}
 
-	
+	@Test
+	public void linksDontWorkAsBuffers() {
+		Button button = new Button("[test-button]");
+		FlipperObject link = new Link("[test-link]", 1, 25);
+		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button);
+		link.getSuccessors().add(bufu);
+
+		FlipperObject[] objects = { bufu, link };
+
+		Data data = new Event("e1");
+		Assert.assertEquals("link is empty, will accept", true, link.canAccept());
+		link.insert(data);
+		Assert.assertEquals("link is progressing, will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is progressing, will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is progressing, will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is progressing, will not accept", false, link.canAccept());
+		Assert.assertEquals("last step of link processing", 75, link.getProgress());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done here", 0, link.getProgress());
+		Assert.assertEquals("but will not accept as buffer is still not done", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu is progressing", 20, bufu.getProgress());
+		Assert.assertEquals("link will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu is progressing", 40, bufu.getProgress());
+		Assert.assertEquals("link will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu is progressing", 60, bufu.getProgress());
+		Assert.assertEquals("link will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu is progressing", 80, bufu.getProgress());
+		Assert.assertEquals("link will not accept", false, link.canAccept());
+
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu done here, but needs to release", 100, bufu.getProgress());
+		Assert.assertEquals("link will still NOT accept, bufu needs to release", false, link.canAccept());
+
+		button.press();
+		doSteps(objects);
+		Assert.assertEquals("link is done already", 0, link.getProgress());
+		Assert.assertEquals("bufu released the event here", 0, bufu.getProgress());
+		Assert.assertEquals("link will NOW accept", true, link.canAccept());
+
+	}
+
+	private void doSteps(FlipperObject... objects) {
+		for (FlipperObject object : objects) {
+			object.doStep();
+		}
+	}
+
 }

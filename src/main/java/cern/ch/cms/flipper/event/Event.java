@@ -6,4 +6,8 @@ public class Event extends Data {
 		super(fragment1.getName() + "+" + fragment2.getName() + "+" + fragment3.getName() + "+" + fragment4.getName());
 	}
 
+	public Event(String name) {
+		super(name);
+	}
+
 }

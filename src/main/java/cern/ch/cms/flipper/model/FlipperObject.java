@@ -22,8 +22,13 @@ public abstract class FlipperObject extends NamedObject {
 	/** Data currently in this object */
 	protected final SimpleFifoQueue queue;
 
+	/** How many data objects can be hold at the same time */
 	private final int capacity;
 
+	/**
+	 * Is awaiting data? true when some date is flowing to this objects (cannot
+	 * accept more), false otherwise (optional use)
+	 */
 	private boolean awaiting;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
@@ -35,16 +40,6 @@ public abstract class FlipperObject extends NamedObject {
 		this.capacity = capacity;
 		this.queue = new SimpleFifoQueue(capacity);
 		this.setBusy(false);
-	}
-
-	/** Can accept more data */
-	public boolean canAccept() {
-		if (queue.size() == capacity) {
-			logger.info(name + " sorry, cannot accept");
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	/** Get the data */
@@ -87,19 +82,54 @@ public abstract class FlipperObject extends NamedObject {
 		return;
 	}
 
+	/** Can accept more data */
+	public boolean canAccept() {
+
+		boolean iAmAbleToAccept;
+
+		if (queue.size() == capacity) {
+			logger.info(name + " sorry, I cannot accept");
+			iAmAbleToAccept = false;
+			return false;
+		} else {
+			iAmAbleToAccept = true;
+		}
+
+		boolean existsNonLinkSuccessorsCanAccept = false;
+		if (this instanceof Link) {
+			logger.debug(name + " I am link so I have to ask others if they can accept");
+			for (FlipperObject successor : successors) {
+				boolean canAccept = successor.canAccept();
+				if (canAccept == true) {
+					logger.debug(name + " I found successor which will accept: " + successor.getName());
+					existsNonLinkSuccessorsCanAccept = true;
+				}
+			}
+		} else {
+			logger.debug(name + " I am not link so I accept on my own");
+			existsNonLinkSuccessorsCanAccept = true;
+		}
+
+		if (iAmAbleToAccept == false || existsNonLinkSuccessorsCanAccept == false) {
+			logger.info(name + " cannot accept the data. 1. Can I accept: " + iAmAbleToAccept
+					+ ". 2. Can my successors accept: " + existsNonLinkSuccessorsCanAccept);
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
 	protected boolean canSend() {
 
-		boolean allAccept = true;
+		boolean allDirectAccept = true;
 		for (FlipperObject successor : successors) {
 			boolean accept = successor.canAccept();
 			if (!accept) {
-				allAccept = false;
+				allDirectAccept = false;
 			}
 		}
-		if (!allAccept) {
-			logger.info(name + " cannot pass the data to successor");
-		}
-		return allAccept;
+		return allDirectAccept;
 
 	}
 
