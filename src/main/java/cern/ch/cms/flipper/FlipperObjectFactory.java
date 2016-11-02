@@ -22,33 +22,38 @@ public class FlipperObjectFactory {
 	}
 
 	public FlipperObject createLink(String name) {
-		String uniqueName = getUniqueName(name);
+		String uniqueName = getShortName(name);
 		FlipperObject link = new Link(uniqueName, 1, 25);
 		model.getFlipperObjects().add(link);
 		return link;
 	}
 
 	public FlipperObject createBUFU(String name, Button button) {
-		String uniqueName = getUniqueName(name);
+		String uniqueName = getShortName(name);
 		FlipperObject bufu = new BUFU(uniqueName, 10, 25, button);
 		model.getFlipperObjects().add(bufu);
 		return bufu;
 	}
 
 	public FlipperObject createSwitch(String name) {
-		String uniqueName = getUniqueName(name);
+		String uniqueName = getShortName(name);
 		FlipperObject switch_ = new Switch(uniqueName);
 		model.getFlipperObjects().add(switch_);
 		return switch_;
 	}
 
-	private String getUniqueName(String name) {
+	private String getUniqueName2(String name) {
 		return "[" + String.format("%02d", counter++) + ": " + name + "]";
+	}
+
+	private String getShortName(String name) {
+		counter++;
+		return name;
 	}
 
 	public FlipperObject createStorage() {
 
-		String uniqueName = getUniqueName("Storage");
+		String uniqueName = getShortName("Storage");
 		FlipperObject storage = new Storage(uniqueName, 40);
 		model.getFlipperObjects().add(storage);
 		return storage;
@@ -56,7 +61,7 @@ public class FlipperObjectFactory {
 
 	public Buffer createBuffer(String name, Button button) {
 
-		String uniqueName = getUniqueName(name);
+		String uniqueName = getShortName(name);
 		Buffer buffer = new Buffer(uniqueName, 12, 10, 10, button);
 		model.getFlipperObjects().add(buffer);
 		return buffer;
@@ -70,7 +75,7 @@ public class FlipperObjectFactory {
 	}
 
 	public Button createButton(String name) {
-		String uniqueName = getUniqueName(name);
+		String uniqueName = getShortName(name);
 		Button button = new Button(uniqueName);
 		model.getButtons().add(button);
 		return button;

@@ -26,18 +26,10 @@ public class Switch extends FlipperObject {
 
 		boolean basicAccept = super.canAccept();
 
-		// boolean backpressure = !canSend();
-
-		// if (basicAccept && !backpressure) {
 		if (basicAccept) {
 			return true;
 		} else {
-			logger.info(name + " cannot accept new event. Me: " + basicAccept);// +
-																				// ",
-																				// backpressure:
-																				// "
-																				// +
-																				// backpressure);
+			logger.debug(name + " cannot accept new event. Me: " + basicAccept);
 			return false;
 		}
 
@@ -55,7 +47,8 @@ public class Switch extends FlipperObject {
 			Event event = new Event(fragment1, fragment2, fragment3, fragment4);
 			outputQueue.add(event);
 			queue.clear();
-			logger.info(name + " Built new event: " + event.getName() + " with the target " + event.getTarget().getName());
+			logger.debug(
+					name + " Built new event: " + event.getName() + " with the target " + event.getTarget().getName());
 
 			return 100;
 		} else if (queue.size() == 3) {
@@ -111,6 +104,10 @@ public class Switch extends FlipperObject {
 	protected void finished() {
 		logger.debug(name + " finished assemblying event");
 		return;
+	}
+
+	public SimpleFifoQueue getOutputQueue() {
+		return outputQueue;
 	}
 
 }

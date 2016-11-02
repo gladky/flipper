@@ -28,27 +28,27 @@ public class FlipperGame {
 
 	private final FlipperObject storage;
 
-	private final FlipperObject link11;
-	private final FlipperObject link12;
-	private final FlipperObject link13;
-	private final FlipperObject link14;
+	public final FlipperObject link11;
+	public final FlipperObject link12;
+	public final FlipperObject link13;
+	public final FlipperObject link14;
 
 	private final Buffer buffer1;
 	private final Buffer buffer2;
 	private final Buffer buffer3;
 	private final Buffer buffer4;
 
-	private final FlipperObject link21;
-	private final FlipperObject link22;
-	private final FlipperObject link23;
-	private final FlipperObject link24;
+	public final FlipperObject link21;
+	public final FlipperObject link22;
+	public final FlipperObject link23;
+	public final FlipperObject link24;
 
-	private final FlipperObject link31;
-	private final FlipperObject link32;
-	private final FlipperObject link33;
-	private final FlipperObject link34;
-	private final FlipperObject link35;
-	private final FlipperObject link36;
+	public final FlipperObject link31;
+	public final FlipperObject link32;
+	public final FlipperObject link33;
+	public final FlipperObject link34;
+	public final FlipperObject link35;
+	public final FlipperObject link36;
 
 	private final FlipperObject bufuL1;
 	private final FlipperObject bufuL2;
@@ -57,14 +57,14 @@ public class FlipperGame {
 	private final FlipperObject bufuR2;
 	private final FlipperObject bufuR3;
 
-	private final FlipperObject link41;
-	private final FlipperObject link42;
-	private final FlipperObject link43;
-	private final FlipperObject link44;
-	private final FlipperObject link45;
-	private final FlipperObject link46;
-	private final FlipperObject link47;
-	private final FlipperObject link48;
+	public final FlipperObject link41;
+	public final FlipperObject link42;
+	public final FlipperObject link43;
+	public final FlipperObject link44;
+	public final FlipperObject link45;
+	public final FlipperObject link46;
+	public final FlipperObject link47;
+	public final FlipperObject link48;
 
 	private final FlipperObject switch_;
 
@@ -75,56 +75,56 @@ public class FlipperGame {
 		controller = new GameController();
 		factory = new FlipperObjectFactory(controller);
 
-		buttonL1 = factory.createButton("button Level0");
-		buttonHLT_L1 = factory.createButton("button L1");
-		buttonHLT_L2 = factory.createButton("button L2");
-		buttonHLT_L3 = factory.createButton("button L3");
-		buttonHLT_R1 = factory.createButton("button R1");
-		buttonHLT_R2 = factory.createButton("button R2");
-		buttonHLT_R3 = factory.createButton("button R3");
+		buttonL1 = factory.createButton("Lv0 btn");
+		buttonHLT_L1 = factory.createButton("L1 btn");
+		buttonHLT_L2 = factory.createButton("L2 btn");
+		buttonHLT_L3 = factory.createButton("L3 btn");
+		buttonHLT_R1 = factory.createButton("R1 btn");
+		buttonHLT_R2 = factory.createButton("R2 btn");
+		buttonHLT_R3 = factory.createButton("R3 btn");
 
 		/* links to buffer */
-		link11 = factory.createLink("  left to buffer link");
-		link12 = factory.createLink(" mleft to buffer link");
-		link13 = factory.createLink("mright to buffer link");
-		link14 = factory.createLink(" right to buffer link");
+		link11 = factory.createLink("11");
+		link12 = factory.createLink("12");
+		link13 = factory.createLink("13");
+		link14 = factory.createLink("14");
 
-		buffer1 = factory.createBuffer("  left buffer", buttonL1);
-		buffer2 = factory.createBuffer(" mleft buffer", buttonL1);
-		buffer3 = factory.createBuffer("mright buffer", buttonL1);
-		buffer4 = factory.createBuffer(" right buffer", buttonL1);
+		buffer1 = factory.createBuffer("buf1", buttonL1);
+		buffer2 = factory.createBuffer("buf2", buttonL1);
+		buffer3 = factory.createBuffer("buf3", buttonL1);
+		buffer4 = factory.createBuffer("buf4", buttonL1);
 
 		/* links to switch */
-		link21 = factory.createLink("  left to switch link");
-		link22 = factory.createLink(" mleft to switch link");
-		link23 = factory.createLink("mright to switch link");
-		link24 = factory.createLink(" right to switch link");
+		link21 = factory.createLink("21");
+		link22 = factory.createLink("22");
+		link23 = factory.createLink("23");
+		link24 = factory.createLink("24");
 
 		switch_ = factory.createSwitch("switch");
 
 		/* links to bufus */
-		link31 = factory.createLink("to L1 bufu link");
-		link32 = factory.createLink("to L2 bufu link");
-		link33 = factory.createLink("to L3 bufu link");
-		link34 = factory.createLink("to R1 bufu link");
-		link35 = factory.createLink("to R2 bufu link");
-		link36 = factory.createLink("to R3 bufu link");
+		link31 = factory.createLink("31");
+		link32 = factory.createLink("32");
+		link33 = factory.createLink("33");
+		link34 = factory.createLink("34");
+		link35 = factory.createLink("35");
+		link36 = factory.createLink("36");
 
-		bufuL1 = factory.createBUFU("bufu L1", buttonHLT_L1);
-		bufuL2 = factory.createBUFU("bufu L2", buttonHLT_L2);
-		bufuL3 = factory.createBUFU("bufu L3", buttonHLT_L3);
-		bufuR1 = factory.createBUFU("bufu R1", buttonHLT_R1);
-		bufuR2 = factory.createBUFU("bufu R2", buttonHLT_R2);
-		bufuR3 = factory.createBUFU("bufu R3", buttonHLT_R3);
+		bufuL1 = factory.createBUFU("L1BF", buttonHLT_L1);
+		bufuL2 = factory.createBUFU("L2BF", buttonHLT_L2);
+		bufuL3 = factory.createBUFU("L3BF", buttonHLT_L3);
+		bufuR1 = factory.createBUFU("R1BF", buttonHLT_R1);
+		bufuR2 = factory.createBUFU("R2BF", buttonHLT_R2);
+		bufuR3 = factory.createBUFU("R3BF", buttonHLT_R3);
 
-		link41 = factory.createLink("L1 to storage link");
-		link42 = factory.createLink("L2 to storage link");
-		link43 = factory.createLink("LS to storage link");
-		link44 = factory.createLink("LF to storage link");
-		link45 = factory.createLink("R storage link");
-		link46 = factory.createLink("R2 to storage link");
-		link47 = factory.createLink("RS to storage link");
-		link48 = factory.createLink("RF to storage link");
+		link41 = factory.createLink("41");
+		link42 = factory.createLink("42");
+		link43 = factory.createLink("43");
+		link44 = factory.createLink("44");
+		link45 = factory.createLink("45");
+		link46 = factory.createLink("46");
+		link47 = factory.createLink("47");
+		link48 = factory.createLink("48");
 
 		storage = factory.createStorage();
 
@@ -275,5 +275,21 @@ public class FlipperGame {
 
 	public FlipperObject getBufuR3() {
 		return bufuR3;
+	}
+
+	public Buffer getBuffer1() {
+		return buffer1;
+	}
+
+	public Buffer getBuffer2() {
+		return buffer2;
+	}
+
+	public Buffer getBuffer3() {
+		return buffer3;
+	}
+
+	public Buffer getBuffer4() {
+		return buffer4;
 	}
 }

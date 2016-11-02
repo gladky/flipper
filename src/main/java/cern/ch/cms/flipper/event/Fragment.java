@@ -5,7 +5,8 @@ public class Fragment extends Data {
 	private static int id = 0;
 
 	public Fragment() {
-		super("f" + ++id);
+		super("" + id);
+		id++;
 	}
 
 }

@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import cern.ch.cms.flipper.FlipperGame;
+import cern.ch.cms.flipper.FlowObserver;
+import cern.ch.cms.flipper.event.Event;
 
 public class FlipperGameTest {
 
@@ -98,7 +100,17 @@ public class FlipperGameTest {
 	public void stressTest() {
 
 		FlipperGame flipperGame = new FlipperGame();
-		// Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
+		FlowObserver observer = new FlowObserver(flipperGame);
+
+		Logger.getRootLogger().setLevel(Level.OFF);
+		Logger.getLogger(Switch.class).setLevel(Level.OFF);
+		Logger.getLogger(Clickable.class).setLevel(Level.OFF);
+		Logger.getLogger(FlipperObject.class).setLevel(Level.OFF);
+		Logger.getLogger(Event.class).setLevel(Level.INFO);
+		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);
+		Logger.getLogger(FlowObserver.class).setLevel(Level.OFF);
+
+		int update = 0;
 
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 
@@ -119,7 +131,9 @@ public class FlipperGameTest {
 			flipperGame.pressButtonHLT_R2();
 			flipperGame.pressButtonHLT_R3();
 			flipperGame.doStep();
-			logger.debug("Step " + i + " ------------------------------ step " + i);
+			update++;
+			observer.persist();
+			logger.debug("Update" + update + " ------------------------------ update " + update);
 		}
 
 		Assert.assertEquals("Make sure 12 events were generated", 12, generatedEvents);
@@ -135,11 +149,16 @@ public class FlipperGameTest {
 			flipperGame.pressButtonHLT_R2();
 			flipperGame.pressButtonHLT_R3();
 			flipperGame.doStep();
+			update++;
+			observer.persist();
+			logger.debug("Update" + update + " ------------------------------ update " + update);
 		}
 
 		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
 
 		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
+
+		System.out.println(observer.toString());
 
 	}
 }

@@ -31,7 +31,7 @@ public class GameController {
 
 	public void doStep() {
 
-		logger.trace("Processing round");
+		logger.debug("Processing round");
 
 		ListIterator<FlipperObject> li = flipperObjects.listIterator(flipperObjects.size());
 
