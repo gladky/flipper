@@ -11,7 +11,7 @@ public class FlipperGameTest {
 
 	private static final Logger logger = Logger.getLogger(FlipperGameTest.class);
 
-	private static final int stepsLXToStorage = 10;
+	private static final int stepsLXToStorage = 20;
 	private static final int timeout = 100;
 
 	// LZ
@@ -28,9 +28,9 @@ public class FlipperGameTest {
 
 		flipperGame.generateNewFragments();
 		flipperGame.doSteps(stepsToLZ);
-		flipperGame.pressButtonLZ();
+		flipperGame.pressButtonLevel1();
 		flipperGame.doSteps(stepsToLX);
-		flipperGame.pressButtonL1();
+		flipperGame.pressButtonHLT_L1();
 		flipperGame.doSteps(stepsToStorage);
 
 	}
@@ -39,7 +39,7 @@ public class FlipperGameTest {
 	public void oneEventAvgTimingTest() {
 
 		FlipperGame flipperGame = new FlipperGame();
-		// Logger.getLogger(FlipperObject.class).setLevel(Level.TRACE);
+		Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
 
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 		doFlow(flipperGame, stepsToLZMax, stepsLZToLXAvg, stepsLXToStorage);
@@ -56,7 +56,7 @@ public class FlipperGameTest {
 
 		flipperGame.generateNewFragments();
 		flipperGame.doSteps(stepsToLZAvg);
-		flipperGame.pressButtonLZ();
+		flipperGame.pressButtonLevel1();
 		flipperGame.doSteps(stepsLZToLXAvg);
 
 		Assert.assertEquals(1, flipperGame.getBufuL1().queue.size());
@@ -98,27 +98,48 @@ public class FlipperGameTest {
 	public void stressTest() {
 
 		FlipperGame flipperGame = new FlipperGame();
-		Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
+		// Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
 
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 
-		for (int i = 0; i < 50; i++) {
-			if (i % 4 == 0) {
+		/* Generate new events while pressing the buttons */
+		int generatedEvents = 0;
+		for (int i = 0; i < 100; i++) {
+			if (i % 4 == 0 && i <= 44) {
+				logger.trace("Generating new event " + i / 4);
+				generatedEvents++;
 				// 4 steps for link to process data
 				flipperGame.generateNewFragments();
 			}
-			flipperGame.pressButtonLZ();
-			flipperGame.pressButtonL1();
-			flipperGame.pressButtonL2();
-			flipperGame.pressButtonL3();
-			flipperGame.pressButtonR1();
-			flipperGame.pressButtonR2();
-			flipperGame.pressButtonR3();
+			flipperGame.pressButtonLevel1();
+			flipperGame.pressButtonHLT_L1();
+			flipperGame.pressButtonHLT_L2();
+			flipperGame.pressButtonHLT_L3();
+			flipperGame.pressButtonHLT_R1();
+			flipperGame.pressButtonHLT_R2();
+			flipperGame.pressButtonHLT_R3();
 			flipperGame.doStep();
-			logger.info("Step " + i + " ------------------------------ step " + i);
+			logger.debug("Step " + i + " ------------------------------ step " + i);
 		}
 
-		Assert.assertEquals("Event in storage", 1, flipperGame.getStorage().queue.size());
+		Assert.assertEquals("Make sure 12 events were generated", 12, generatedEvents);
+
+		/* Only press the buttons */
+		for (int i = 0; i < 100; i++) {
+			logger.debug("Storage has: " + flipperGame.getStorage().queue.size());
+			flipperGame.pressButtonLevel1();
+			flipperGame.pressButtonHLT_L1();
+			flipperGame.pressButtonHLT_L2();
+			flipperGame.pressButtonHLT_L3();
+			flipperGame.pressButtonHLT_R1();
+			flipperGame.pressButtonHLT_R2();
+			flipperGame.pressButtonHLT_R3();
+			flipperGame.doStep();
+		}
+
+		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
+
+		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
 
 	}
 }

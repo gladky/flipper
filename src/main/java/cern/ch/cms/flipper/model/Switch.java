@@ -22,7 +22,29 @@ public class Switch extends FlipperObject {
 	}
 
 	@Override
-	public int stepImplementation() {
+	public boolean canAccept() {
+
+		boolean basicAccept = super.canAccept();
+
+		// boolean backpressure = !canSend();
+
+		// if (basicAccept && !backpressure) {
+		if (basicAccept) {
+			return true;
+		} else {
+			logger.info(name + " cannot accept new event. Me: " + basicAccept);// +
+																				// ",
+																				// backpressure:
+																				// "
+																				// +
+																				// backpressure);
+			return false;
+		}
+
+	}
+
+	@Override
+	public int stepImplementation(Data data) {
 
 		if (queue.size() == 4) {
 
@@ -33,7 +55,7 @@ public class Switch extends FlipperObject {
 			Event event = new Event(fragment1, fragment2, fragment3, fragment4);
 			outputQueue.add(event);
 			queue.clear();
-			logger.info(name + " Build new event: " + event.getName());
+			logger.info(name + " Built new event: " + event.getName() + " with the target " + event.getTarget().getName());
 
 			return 100;
 		} else if (queue.size() == 3) {
@@ -51,30 +73,21 @@ public class Switch extends FlipperObject {
 	@Override
 	protected boolean canSend() {
 
+		logger.debug(name + " looking for bufu successor");
 		boolean atLeastOneAccept = false;
-		for (FlipperObject successor : getSuccessors()) {
-			boolean accept = successor.canAccept();
-			if (accept) {
-				atLeastOneAccept = true;
-			}
+
+		FlipperObject successorToAvailableBufu = outputQueue.peek().getTarget();
+		logger.debug(name + " Dispatched to Bufu successor " + successorToAvailableBufu.name
+				+ ", will now verify if not busy");
+		if (!successorToAvailableBufu.isBusy()) {
+			atLeastOneAccept = true;
+			logger.debug(name + " can send event, available bufu successor: " + successorToAvailableBufu.name);
+		}
+
+		if (!atLeastOneAccept) {
+			logger.info("There is no BUFU avaialble right now");
 		}
 		return atLeastOneAccept;
-
-	}
-
-	private FlipperObject findBUFUSuccesor(FlipperObject successor) {
-
-		logger.info("Finding for BUFU in " + successor.getName());
-
-		if (successor instanceof BUFU) {
-			return successor;
-		} else {
-			for (FlipperObject nextSuccessor : successor.getSuccessors()) {
-				return findBUFUSuccesor(nextSuccessor);
-			}
-		}
-		logger.error(name + " I have no indirect successor of type BUFU, check the model");
-		return null;
 
 	}
 
@@ -84,8 +97,8 @@ public class Switch extends FlipperObject {
 
 		for (FlipperObject successor : getSuccessors()) {
 
-			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			if (bufuSuccessor.canAccept() && !bufuSuccessor.isBusy()) {
+			FlipperObject bufuSuccessor = data.getTarget();
+			if (!bufuSuccessor.isBusy() && successor.canAccept()) {
 				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
 				bufuSuccessor.setBusy(true);
 				successor.insert(data);
