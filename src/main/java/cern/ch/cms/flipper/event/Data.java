@@ -3,6 +3,8 @@ package cern.ch.cms.flipper.event;
 import cern.ch.cms.flipper.model.FlipperObject;
 
 public abstract class Data {
+	
+	private int progress;
 
 	private boolean dispatched;
 
@@ -37,6 +39,14 @@ public abstract class Data {
 
 	public void setDispatched(boolean dispatched) {
 		this.dispatched = dispatched;
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	public void setProgress(int progress) {
+		this.progress = progress;
 	}
 
 }

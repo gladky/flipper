@@ -49,7 +49,7 @@ public class FlipperObjectFactory {
 	public FlipperObject createStorage() {
 
 		String uniqueName = getUniqueName("Storage");
-		FlipperObject storage = new Storage(uniqueName);
+		FlipperObject storage = new Storage(uniqueName, 40);
 		model.getFlipperObjects().add(storage);
 		return storage;
 	}

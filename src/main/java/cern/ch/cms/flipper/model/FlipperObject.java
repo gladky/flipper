@@ -10,9 +10,6 @@ import cern.ch.cms.flipper.event.Data;
 
 public abstract class FlipperObject extends NamedObject {
 
-	/** Indicator of simulation progress in this object, values: 0-99 */
-	protected int progress;
-
 	/** Step of simulation progress in this object */
 	private final int progressStep;
 
@@ -23,7 +20,7 @@ public abstract class FlipperObject extends NamedObject {
 	protected final SimpleFifoQueue queue;
 
 	/** How many data objects can be hold at the same time */
-	private final int capacity;
+	protected final int capacity;
 
 	/**
 	 * Is awaiting data? true when some date is flowing to this objects (cannot
@@ -48,29 +45,49 @@ public abstract class FlipperObject extends NamedObject {
 			return false;
 		} else {
 			logger.debug(name + " received the data " + data.getName());
+			data.setProgress(0);
 			queue.add(data);
 			awaiting = false;
 			return true;
 		}
 	}
 
-	public int stepImplementation() {
-		return progress += progressStep;
+	public int stepImplementation(Data current) {
+		int newProgress = current.getProgress() + progressStep;
+		current.setProgress(newProgress);
+		return newProgress;
 	}
 
 	/** Do step of simulation, will increase the progress with step */
 	public void doStep() {
 
 		if (!queue.isEmpty()) {
-			logger.trace(name + " will do step, progress: " + progress);
-			progress = stepImplementation();
-			if (progress > 99) {
+			boolean localBackpressure = false;
+			
+			Data backpressureCause = null;
 
-				finished();
+			for (int i = 0; i < queue.size(); i++) {
 
-				if (canSend()) {
-					sendData();
-					progress = 0;
+				if (!localBackpressure) {
+					Data current = queue.get(i);
+					logger.trace(name + " will do step, progress before step: " + current.getProgress());
+					int progress = stepImplementation(current);
+					if (progress > 99) {
+
+						finished();
+
+						if (canSend()) {
+							sendData();
+							progress = 0;
+						} else {
+							backpressureCause = current;
+							localBackpressure = true;
+						}
+					}
+
+				} else {
+					logger.debug("Local backpressure, waiting for finished data " + backpressureCause.getName()
+							+ " to be released");
 				}
 			}
 		}
@@ -78,7 +95,7 @@ public abstract class FlipperObject extends NamedObject {
 
 	protected void finished() {
 		Data data = queue.peek();
-		logger.debug(name + " finished with " + data + " my progress is now " + progress);
+		logger.debug(name + " finished with " + data + " my progress is now " + data.getProgress());
 		return;
 	}
 
@@ -88,7 +105,7 @@ public abstract class FlipperObject extends NamedObject {
 		boolean iAmAbleToAccept;
 
 		if (queue.size() == capacity) {
-			logger.info(name + " sorry, I cannot accept, I'm full");
+			logger.debug(name + " sorry, I cannot accept, I'm full");
 			iAmAbleToAccept = false;
 			return false;
 		} else {
@@ -142,8 +159,10 @@ public abstract class FlipperObject extends NamedObject {
 		}
 	}
 
-	public int getProgress() {
-		return progress;
+	/** Indicator of simulation progress in this object, values: 0-99 */
+	public int[] getProgress() {
+
+		return queue.getProgress();
 	}
 
 	public List<FlipperObject> getSuccessors() {

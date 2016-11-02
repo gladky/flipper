@@ -44,7 +44,6 @@ public abstract class Clickable extends FlipperObject {
 				Data data = this.queue.poll();
 				logger.info(name + " data " + data.getName() + " not accepted in given timespan, rejecting");
 				button.disable();
-				this.progress = 0;
 			}
 			return false;
 		}

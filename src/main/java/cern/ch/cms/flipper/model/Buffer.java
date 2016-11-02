@@ -28,9 +28,11 @@ public class Buffer extends Clickable {
 			logger.trace(name + " Dispatching");
 			FlipperObject next = dispatcher.findAvailableTarget();
 
-			logger.debug(name + " Found available BUFU via " + next.name);
-			queue.peek().setDispatched(true);
-			queue.peek().setTarget(next);
+			if (!dispatcher.isBackpressure()) {
+				logger.debug(name + " Found available BUFU via " + next.name);
+				queue.peek().setDispatched(true);
+				queue.peek().setTarget(next);
+			}
 		}
 	}
 

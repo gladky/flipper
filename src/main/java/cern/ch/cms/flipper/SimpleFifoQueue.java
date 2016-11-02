@@ -78,4 +78,17 @@ public class SimpleFifoQueue {
 		queue.clear();
 	}
 
+	public int[] getProgress() {
+		
+		if(queue.size() == 0){
+			return new int[]{0};
+		}
+
+		int[] progressArray = new int[queue.size()];
+		for(int i=0; i<queue.size(); i++){
+			progressArray[i] = queue.get(i).getProgress();
+		}
+		return progressArray;
+	}
+
 }

@@ -98,12 +98,16 @@ public class FlipperGameTest {
 	public void stressTest() {
 
 		FlipperGame flipperGame = new FlipperGame();
-		//Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
+		// Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
 
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 
+		/* Generate new events while pressing the buttons */
+		int generatedEvents = 0;
 		for (int i = 0; i < 100; i++) {
-			if (i % 4 == 0) {
+			if (i % 4 == 0 && i <= 44) {
+				logger.trace("Generating new event " + i / 4);
+				generatedEvents++;
 				// 4 steps for link to process data
 				flipperGame.generateNewFragments();
 			}
@@ -115,10 +119,27 @@ public class FlipperGameTest {
 			flipperGame.pressButtonHLT_R2();
 			flipperGame.pressButtonHLT_R3();
 			flipperGame.doStep();
-			logger.info("Step " + i + " ------------------------------ step " + i);
+			logger.debug("Step " + i + " ------------------------------ step " + i);
 		}
 
-		Assert.assertEquals("Event in storage", 5, flipperGame.getStorage().queue.size());
+		Assert.assertEquals("Make sure 12 events were generated", 12, generatedEvents);
+
+		/* Only press the buttons */
+		for (int i = 0; i < 100; i++) {
+			logger.debug("Storage has: " + flipperGame.getStorage().queue.size());
+			flipperGame.pressButtonLevel1();
+			flipperGame.pressButtonHLT_L1();
+			flipperGame.pressButtonHLT_L2();
+			flipperGame.pressButtonHLT_L3();
+			flipperGame.pressButtonHLT_R1();
+			flipperGame.pressButtonHLT_R2();
+			flipperGame.pressButtonHLT_R3();
+			flipperGame.doStep();
+		}
+
+		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
+
+		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
 
 	}
 }
