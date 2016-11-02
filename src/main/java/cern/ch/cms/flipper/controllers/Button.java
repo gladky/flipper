@@ -24,15 +24,20 @@ public class Button extends NamedObject {
 	}
 
 	public void enable() {
+		logger.debug(name + " Button enabled");
 		enabled = true;
 		pressed = false;
 	}
 
-	public void press() {
+	public boolean press() {
+		logger.trace(name + " Button pressed");
 		if (enabled) {
+			logger.debug(name + " Button pressed when enabled");
 			pressed = true;
+			return true;
 		} else {
-			logger.debug("Ignoring button pressed");
+			logger.debug(name + " Ignoring button pressed");
+			return false;
 		}
 	}
 
@@ -41,6 +46,7 @@ public class Button extends NamedObject {
 	}
 
 	public void disable() {
+		logger.debug(name + " Button disable requested");
 		disableRequest = true;
 	}
 
@@ -50,7 +56,7 @@ public class Button extends NamedObject {
 
 	public void doStep() {
 		if (disableRequest) {
-			logger.debug("Button deactivated");
+			logger.debug("Button disabled");
 			enabled = false;
 			pressed = false;
 			disableRequest = false;

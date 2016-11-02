@@ -78,7 +78,7 @@ public abstract class FlipperObject extends NamedObject {
 
 	protected void finished() {
 		Data data = queue.peek();
-		logger.debug(name + " finished with " + data);
+		logger.debug(name + " finished with " + data + " my progress is now " + progress);
 		return;
 	}
 
@@ -88,7 +88,7 @@ public abstract class FlipperObject extends NamedObject {
 		boolean iAmAbleToAccept;
 
 		if (queue.size() == capacity) {
-			logger.info(name + " sorry, I cannot accept");
+			logger.info(name + " sorry, I cannot accept, I'm full");
 			iAmAbleToAccept = false;
 			return false;
 		} else {
@@ -97,7 +97,7 @@ public abstract class FlipperObject extends NamedObject {
 
 		boolean existsNonLinkSuccessorsCanAccept = false;
 		if (this instanceof Link) {
-			logger.debug(name + " I am link so I have to ask others if they can accept");
+			logger.trace(name + " I am link so I have to ask others if they can accept");
 			for (FlipperObject successor : successors) {
 				boolean canAccept = successor.canAccept();
 				if (canAccept == true) {
@@ -106,12 +106,12 @@ public abstract class FlipperObject extends NamedObject {
 				}
 			}
 		} else {
-			logger.debug(name + " I am not link so I accept on my own");
+			logger.trace(name + " I am not link so I accept on my own");
 			existsNonLinkSuccessorsCanAccept = true;
 		}
 
 		if (iAmAbleToAccept == false || existsNonLinkSuccessorsCanAccept == false) {
-			logger.info(name + " cannot accept the data. 1. Can I accept: " + iAmAbleToAccept
+			logger.info(name + " cannot accept any new data. 1. Can I accept: " + iAmAbleToAccept
 					+ ". 2. Can my successors accept: " + existsNonLinkSuccessorsCanAccept);
 			return false;
 		} else {

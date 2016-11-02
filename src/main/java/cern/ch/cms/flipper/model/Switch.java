@@ -22,6 +22,23 @@ public class Switch extends FlipperObject {
 	}
 
 	@Override
+	public boolean canAccept() {
+
+		boolean basicAccept = super.canAccept();
+
+		//boolean backpressure = !canSend();
+
+		//if (basicAccept && !backpressure) {
+			if (basicAccept) {
+			return true;
+		} else {
+			logger.info(name + " cannot accept new event. Me: " + basicAccept);// + ", backpressure: " + backpressure);
+			return false;
+		}
+
+	}
+
+	@Override
 	public int stepImplementation() {
 
 		if (queue.size() == 4) {
@@ -53,15 +70,13 @@ public class Switch extends FlipperObject {
 
 		logger.debug(name + " looking for bufu successor");
 		boolean atLeastOneAccept = false;
-		for (FlipperObject successor : getSuccessors()) {
 
-			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			logger.debug(name + " Found Bufu successor " + bufuSuccessor.name + ", will now verify if not busy");
-			if (!bufuSuccessor.isBusy() && successor.canAccept()) {
-				atLeastOneAccept = true;
-				logger.info(name + " can send event, available bufu successor: " + bufuSuccessor.name);
-				break;
-			}
+		FlipperObject successorToAvailableBufu = outputQueue.peek().getTarget();
+		logger.debug(name + " Dispatched to Bufu successor " + successorToAvailableBufu.name
+				+ ", will now verify if not busy");
+		if (!successorToAvailableBufu.isBusy()) {
+			atLeastOneAccept = true;
+			logger.debug(name + " can send event, available bufu successor: " + successorToAvailableBufu.name);
 		}
 
 		if (!atLeastOneAccept) {
@@ -71,30 +86,14 @@ public class Switch extends FlipperObject {
 
 	}
 
-	private FlipperObject findBUFUSuccesor(FlipperObject successor) {
-
-		logger.debug("Looking for BUFU, checking " + successor.getName());
-
-		if (successor instanceof BUFU) {
-			return successor;
-		} else {
-			for (FlipperObject nextSuccessor : successor.getSuccessors()) {
-				return findBUFUSuccesor(nextSuccessor);
-			}
-		}
-		logger.error(name + " I have no indirect successor of type BUFU, check the model");
-		return null;
-
-	}
-
 	@Override
 	protected void sendData() {
 		Data data = outputQueue.poll();
 
 		for (FlipperObject successor : getSuccessors()) {
 
-			FlipperObject bufuSuccessor = findBUFUSuccesor(successor);
-			if (!bufuSuccessor.isBusy()) {
+			FlipperObject bufuSuccessor = data.getTarget();
+			if (!bufuSuccessor.isBusy() && successor.canAccept()) {
 				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
 				bufuSuccessor.setBusy(true);
 				successor.insert(data);

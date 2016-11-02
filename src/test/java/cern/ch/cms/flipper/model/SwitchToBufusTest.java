@@ -53,7 +53,7 @@ public class SwitchToBufusTest {
 	@Test
 	public void switchToBufuTest() {
 
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu1);
 
 		Mockito.verify(switchSpy, Mockito.times(0)).sendData();
 		Mockito.verify(bufu1, Mockito.times(0)).canAccept();
@@ -75,7 +75,7 @@ public class SwitchToBufusTest {
 
 	@Test
 	public void twoEventsTest() {
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu1);
 
 		Mockito.verify(switchSpy, Mockito.times(0)).sendData();
 		Mockito.verify(bufu1, Mockito.times(0)).canAccept();
@@ -86,18 +86,22 @@ public class SwitchToBufusTest {
 		Mockito.verify(bufu2, Mockito.times(0)).canAccept();
 		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
 
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu2);
 		doSteps(objects);
 
 		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
 		Mockito.verify(bufu2, Mockito.times(2)).canAccept();
 	}
 
-	private void insertNewFragmentsToSwitch() {
+	private void insertNewFragmentsToSwitch(FlipperObject target) {
 		Data f1 = new Fragment();
 		Data f2 = new Fragment();
 		Data f3 = new Fragment();
 		Data f4 = new Fragment();
+		f1.setTarget(target);
+		f2.setTarget(target);
+		f3.setTarget(target);
+		f4.setTarget(target);
 
 		switchSpy.insert(f1);
 		switchSpy.insert(f2);
