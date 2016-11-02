@@ -8,6 +8,18 @@ import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Fragment;
 
+/**
+ * <pre>
+ * ..............
+ * ...switch.....
+ * .../....\.....   <-- link 1-2
+ * .bufu1..bufu2.
+ * ..............
+ * </pre>
+ * 
+ * @author Maciej Gladki (maciej.szymon.gladki@cern.ch)
+ *
+ */
 public class SwitchToBufusTest {
 
 	FlipperObject switchSpy;
@@ -21,13 +33,13 @@ public class SwitchToBufusTest {
 
 	@Before
 	public void initializeFlipperObjects() {
-		switchSpy = Mockito.spy(new Switch("test-switch"));
+		switchSpy = Mockito.spy(new Switch("[test-switch]"));
 
-		link1 = new Link("test-link-1", 1, 25);
-		link2 = new Link("test-link-1", 1, 25);
+		link1 = new Link("[test-link-1]", 1, 25);
+		link2 = new Link("[test-link-2]", 1, 25);
 
-		bufu1 = Mockito.spy(new BUFU("test-bufu-1", 10, 25, new Button("test-button-1")));
-		bufu2 = Mockito.spy(new BUFU("test-bufu-2", 10, 25, new Button("test-button-2")));
+		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 10, 25, new Button("[test-button-1]")));
+		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 10, 25, new Button("[test-button-2]")));
 
 		switchSpy.getSuccessors().add(link1);
 		switchSpy.getSuccessors().add(link2);
@@ -41,14 +53,14 @@ public class SwitchToBufusTest {
 	@Test
 	public void switchToBufuTest() {
 
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu1);
 
 		Mockito.verify(switchSpy, Mockito.times(0)).sendData();
 		Mockito.verify(bufu1, Mockito.times(0)).canAccept();
 		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
 		doSteps(objects);
 		Mockito.verify(switchSpy, Mockito.times(1)).sendData();
-		Mockito.verify(bufu1, Mockito.times(1)).canAccept();
+		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
 		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
 
 		doSteps(objects);
@@ -63,29 +75,33 @@ public class SwitchToBufusTest {
 
 	@Test
 	public void twoEventsTest() {
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu1);
 
 		Mockito.verify(switchSpy, Mockito.times(0)).sendData();
 		Mockito.verify(bufu1, Mockito.times(0)).canAccept();
 		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
 		doSteps(objects);
 		Mockito.verify(switchSpy, Mockito.times(1)).sendData();
-		Mockito.verify(bufu1, Mockito.times(1)).canAccept();
+		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
 		Mockito.verify(bufu2, Mockito.times(0)).canAccept();
 		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
 
-		insertNewFragmentsToSwitch();
+		insertNewFragmentsToSwitch(bufu2);
 		doSteps(objects);
 
 		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
-		Mockito.verify(bufu2, Mockito.times(1)).canAccept();
+		Mockito.verify(bufu2, Mockito.times(2)).canAccept();
 	}
 
-	private void insertNewFragmentsToSwitch() {
+	private void insertNewFragmentsToSwitch(FlipperObject target) {
 		Data f1 = new Fragment();
 		Data f2 = new Fragment();
 		Data f3 = new Fragment();
 		Data f4 = new Fragment();
+		f1.setTarget(target);
+		f2.setTarget(target);
+		f3.setTarget(target);
+		f4.setTarget(target);
 
 		switchSpy.insert(f1);
 		switchSpy.insert(f2);

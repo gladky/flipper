@@ -23,16 +23,19 @@ public abstract class Clickable extends FlipperObject {
 	@Override
 	protected boolean canSend() {
 		
-		if (!button.isActivated()) {
-			button.activate();
+		dispatch();
+
+		/* when clickable wants to send data, button becomes enabled */
+		if (!button.isEnabled() && !backpressure()) {
+			button.enable();
 		}
 
-		boolean pressed = button.getState();
+		boolean pressed = button.isPressed();
 
 		if (pressed) {
-			logger.info(name + " accepted the data " + queue.peek().getName());
+			logger.info(name + " accepted the data " + queue.peek().getName() + " in time");
 			this.timeoutProgress = 0;
-			this.button.deactivate();
+			this.button.disable();
 			return super.canSend();
 		} else {
 			this.timeoutProgress += timeoutStep;
@@ -40,9 +43,17 @@ public abstract class Clickable extends FlipperObject {
 
 				Data data = this.queue.poll();
 				logger.info(name + " data " + data.getName() + " not accepted in given timespan, rejecting");
-				this.progress = 0;
+				button.disable();
 			}
 			return false;
 		}
+	}
+
+	protected boolean backpressure() {
+		return false;
+	}
+	
+	protected void dispatch(){
+		
 	}
 }

@@ -1,8 +1,11 @@
 package cern.ch.cms.flipper;
 
+import java.util.List;
+
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.BUFU;
 import cern.ch.cms.flipper.model.Buffer;
+import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
 import cern.ch.cms.flipper.model.Link;
 import cern.ch.cms.flipper.model.Storage;
@@ -46,18 +49,24 @@ public class FlipperObjectFactory {
 	public FlipperObject createStorage() {
 
 		String uniqueName = getUniqueName("Storage");
-		FlipperObject storage = new Storage(uniqueName);
+		FlipperObject storage = new Storage(uniqueName, 40);
 		model.getFlipperObjects().add(storage);
 		return storage;
 	}
 
-	public FlipperObject createBuffer(String name, Button button) {
+	public Buffer createBuffer(String name, Button button) {
 
 		String uniqueName = getUniqueName(name);
-		FlipperObject buffer = new Buffer(uniqueName, 12, 10, 10, button);
+		Buffer buffer = new Buffer(uniqueName, 12, 10, 10, button);
 		model.getFlipperObjects().add(buffer);
 		return buffer;
 
+	}
+
+	public Dispatcher createDispatcher(List<FlipperObject> bufus, List<FlipperObject> links) {
+		Dispatcher dispatcher = new Dispatcher(bufus, links);
+		model.setDispatcher(dispatcher);
+		return dispatcher;
 	}
 
 	public Button createButton(String name) {

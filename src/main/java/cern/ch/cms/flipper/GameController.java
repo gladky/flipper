@@ -9,12 +9,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
+import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
 
 public class GameController {
 
 	private final List<FlipperObject> flipperObjects;
 	private final Set<Button> buttons;
+	private Dispatcher dispatcher;
 
 	private static final Logger logger = Logger.getLogger(GameController.class);
 
@@ -42,9 +44,15 @@ public class GameController {
 		for (Button button : buttons) {
 			button.doStep();
 		}
+		dispatcher.invalidate();
+		
 	}
 
 	public Set<Button> getButtons() {
 		return buttons;
+	}
+
+	public void setDispatcher(Dispatcher dispatcher) {
+		this.dispatcher = dispatcher;
 	}
 }
