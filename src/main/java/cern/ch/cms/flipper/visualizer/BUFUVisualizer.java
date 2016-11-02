@@ -56,7 +56,7 @@ public class BUFUVisualizer extends FlipperObjectVisualizer {
 
 	public List<Boolean> visualize(int progress) {
 		int state = (int) (progress * ((steps + 1) / 100f));
-		// System.out.println("From progress: " + progress + " -> " + state);
+		System.out.println("From progress: " + progress + " -> " + state);
 
 		if (mapping.containsKey(state)) {
 			state = mapping.get(state);
@@ -65,7 +65,7 @@ public class BUFUVisualizer extends FlipperObjectVisualizer {
 
 		if (state > 28) {
 			state = 28;
-			// System.out.println("Limiting to max: " + state);
+			System.out.println("Limiting to max: " + state);
 		}
 
 		return states.get(state);

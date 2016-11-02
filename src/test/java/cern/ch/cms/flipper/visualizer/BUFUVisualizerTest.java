@@ -16,9 +16,11 @@ public class BUFUVisualizerTest {
 		Assert.assertEquals(Arrays.asList(false, false, false, false, false, false, false, false, false),
 				bufuVisualizer.visualize(0));
 
-		for (int i = 0; i <= 100; i++) {
+		for (int i = 0; i <= 100; i+=10) {
 			printMe(bufuVisualizer.visualize(i));
 		}
+		System.out.println("");
+
 	}
 
 	private void printMe(List<Boolean> results) {
