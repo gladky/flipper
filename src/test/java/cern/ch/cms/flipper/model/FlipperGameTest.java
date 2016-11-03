@@ -23,9 +23,9 @@ public class FlipperGameTest {
 	private static final int stepsToLZMax = 21;
 
 	// LX
-	private static final int stepsLZToLXMin = 20;
-	private static final int stepsLZToLXAvg = 21;
-	private static final int stepsLZToLXMax = 22;
+	private static final int stepsLZToLXMin = 21;
+	private static final int stepsLZToLXAvg = 22;
+	private static final int stepsLZToLXMax = 23;
 
 	private void doFlow(FlipperGame flipperGame, int stepsToLZ, int stepsToLX, int stepsToStorage) {
 
@@ -71,7 +71,9 @@ public class FlipperGameTest {
 	@Test
 	public void LXAcceptedFirstMoment() {
 
-		Logger.getLogger(FlipperObject.class).setLevel(Level.INFO);
+		Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
+		Logger.getLogger(Clickable.class).setLevel(Level.DEBUG);
+		Logger.getLogger(Button.class).setLevel(Level.DEBUG);
 		FlipperGame flipperGame = new FlipperGame();
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 		doFlow(flipperGame, stepsToLZAvg, stepsLZToLXMin, stepsLXToStorage);

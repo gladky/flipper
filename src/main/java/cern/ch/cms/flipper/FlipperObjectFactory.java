@@ -33,7 +33,7 @@ public class FlipperObjectFactory {
 			calculatedStep = 50;
 		}
 		
-		logger.info("Calculated step fore link " + name + " is " + calculatedStep);
+		logger.debug("Calculated step fore link " + name + " is " + calculatedStep);
 		
 
 		String uniqueName = getShortName(name);
