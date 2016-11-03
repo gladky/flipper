@@ -12,8 +12,9 @@ public abstract class Data {
 
 	private final String name;
 
-	public Data(String name) {
+	public Data(String name, boolean isFragment) {
 		this.name = name;
+		this.isFragment = isFragment;
 	}
 
 	public String getName() {
@@ -48,5 +49,7 @@ public abstract class Data {
 	public void setProgress(int progress) {
 		this.progress = progress;
 	}
+	
+	private final boolean isFragment;
 
 }

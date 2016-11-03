@@ -18,13 +18,13 @@ public class FlipperGame {
 	private final GameController controller;
 	private final FlipperObjectFactory factory;
 
-	private final Button buttonL1;
-	private final Button buttonHLT_L1;
-	private final Button buttonHLT_L2;
-	private final Button buttonHLT_L3;
-	private final Button buttonHLT_R1;
-	private final Button buttonHLT_R2;
-	private final Button buttonHLT_R3;
+	public final Button buttonL1;
+	public final Button buttonHLT_L1;
+	public final Button buttonHLT_L2;
+	public final Button buttonHLT_L3;
+	public final Button buttonHLT_R1;
+	public final Button buttonHLT_R2;
+	public final Button buttonHLT_R3;
 
 	private final FlipperObject storage;
 
@@ -68,6 +68,9 @@ public class FlipperGame {
 
 	private final FlipperObject switch_;
 
+	/* max 4 */
+	public final int linkBoost = 4;
+
 	private final Dispatcher dispatcher;
 
 	public FlipperGame() {
@@ -84,10 +87,10 @@ public class FlipperGame {
 		buttonHLT_R3 = factory.createButton("R3 btn");
 
 		/* links to buffer */
-		link11 = factory.createLink("11");
-		link12 = factory.createLink("12");
-		link13 = factory.createLink("13");
-		link14 = factory.createLink("14");
+		link11 = factory.createLink("11", 20 / linkBoost);
+		link12 = factory.createLink("12", 20 / linkBoost);
+		link13 = factory.createLink("13", 20 / linkBoost);
+		link14 = factory.createLink("14", 20 / linkBoost);
 
 		buffer1 = factory.createBuffer("buf1", buttonL1);
 		buffer2 = factory.createBuffer("buf2", buttonL1);
@@ -95,20 +98,20 @@ public class FlipperGame {
 		buffer4 = factory.createBuffer("buf4", buttonL1);
 
 		/* links to switch */
-		link21 = factory.createLink("21");
-		link22 = factory.createLink("22");
-		link23 = factory.createLink("23");
-		link24 = factory.createLink("24");
+		link21 = factory.createLink("21", 20 / linkBoost);
+		link22 = factory.createLink("22", 20 / linkBoost);
+		link23 = factory.createLink("23", 20 / linkBoost);
+		link24 = factory.createLink("24", 20 / linkBoost);
 
 		switch_ = factory.createSwitch("switch");
 
 		/* links to bufus */
-		link31 = factory.createLink("31");
-		link32 = factory.createLink("32");
-		link33 = factory.createLink("33");
-		link34 = factory.createLink("34");
-		link35 = factory.createLink("35");
-		link36 = factory.createLink("36");
+		link31 = factory.createLink("31", 13 / linkBoost);
+		link32 = factory.createLink("32", 17 / linkBoost);
+		link33 = factory.createLink("33", 34 / linkBoost);
+		link34 = factory.createLink("34", 34 / linkBoost);
+		link35 = factory.createLink("35", 17 / linkBoost);
+		link36 = factory.createLink("36", 13 / linkBoost);
 
 		bufuL1 = factory.createBUFU("L1BF", buttonHLT_L1);
 		bufuL2 = factory.createBUFU("L2BF", buttonHLT_L2);
@@ -117,14 +120,14 @@ public class FlipperGame {
 		bufuR2 = factory.createBUFU("R2BF", buttonHLT_R2);
 		bufuR3 = factory.createBUFU("R3BF", buttonHLT_R3);
 
-		link41 = factory.createLink("41");
-		link42 = factory.createLink("42");
-		link43 = factory.createLink("43");
-		link44 = factory.createLink("44");
-		link45 = factory.createLink("45");
-		link46 = factory.createLink("46");
-		link47 = factory.createLink("47");
-		link48 = factory.createLink("48");
+		link41 = factory.createLink("41", 10 / linkBoost);
+		link42 = factory.createLink("42", 4 / linkBoost);
+		link43 = factory.createLink("43", 13 / linkBoost);
+		link44 = factory.createLink("44", 25 / linkBoost);
+		link45 = factory.createLink("45", 10 / linkBoost);
+		link46 = factory.createLink("46", 4 / linkBoost);
+		link47 = factory.createLink("47", 13 / linkBoost);
+		link48 = factory.createLink("48", 25 / linkBoost);
 
 		storage = factory.createStorage();
 

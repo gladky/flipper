@@ -2,6 +2,8 @@ package cern.ch.cms.flipper;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.BUFU;
 import cern.ch.cms.flipper.model.Buffer;
@@ -16,14 +18,26 @@ public class FlipperObjectFactory {
 	private static int counter = 0;
 
 	private final GameController model;
+	
+	private static final Logger logger = Logger.getLogger(FlipperObjectFactory.class);
 
 	public FlipperObjectFactory(GameController model) {
 		this.model = model;
 	}
 
-	public FlipperObject createLink(String name) {
+	public FlipperObject createLink(String name, int leds) {
+		int calculatedStep = 100 / leds;
+		if (calculatedStep < 1) {
+			calculatedStep = 1;
+		} else if (calculatedStep > 50) {
+			calculatedStep = 50;
+		}
+		
+		logger.info("Calculated step fore link " + name + " is " + calculatedStep);
+		
+
 		String uniqueName = getShortName(name);
-		FlipperObject link = new Link(uniqueName, 1, 25);
+		FlipperObject link = new Link(uniqueName, 1, calculatedStep);
 		model.getFlipperObjects().add(link);
 		return link;
 	}

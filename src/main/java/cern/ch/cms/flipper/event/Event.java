@@ -9,13 +9,13 @@ public class Event extends Data {
 	private static final Logger logger = Logger.getLogger(Event.class);
 
 	public Event(Data fragment1, Data fragment2, Data fragment3, Data fragment4) {
-		super(generateSimpleName(fragment4.getName()));
+		super(generateSimpleName(fragment4.getName()),false);
 		this.setTarget(fragment4.getTarget());
 		this.setDispatched(fragment4.isDispatched());
 	}
 
 	public Event(String name) {
-		super(name);
+		super(name,false);
 	}
 
 	private static String generateSimpleName(String i) {

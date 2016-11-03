@@ -7,10 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
+import cern.ch.cms.flipper.controllers.Button;
+import cern.ch.cms.flipper.model.Buffer;
 import cern.ch.cms.flipper.model.FlipperObject;
 import cern.ch.cms.flipper.model.Link;
+import cern.ch.cms.flipper.model.NamedObject;
 import cern.ch.cms.flipper.model.Storage;
 import cern.ch.cms.flipper.model.Switch;
 
@@ -18,11 +22,11 @@ public class FlowObserver {
 
 	private static final int MIN = 2;
 	private static final int WIDTH = 4;
-	private static final int SWITCH_WIDTH = 11;
+	private static final int SWITCH_WIDTH = 5;
 	private static final int STORAGE_WIDTH = 14;
 	private static final String empty = "";
 
-	private List<FlipperObject> observedObjects;
+	private List<NamedObject> observedObjects;
 
 	private List<Map<String, String>> states;
 
@@ -32,12 +36,17 @@ public class FlowObserver {
 
 	public FlowObserver(FlipperGame flipperGame) {
 		this.states = new ArrayList<Map<String, String>>();
-		this.observedObjects = new ArrayList<FlipperObject>();
+		this.observedObjects = new ArrayList<NamedObject>();
 
-		// observedObjects.add(flipperGame.getBuffer1());
-		// observedObjects.add(flipperGame.getBuffer2());
-		// observedObjects.add(flipperGame.getBuffer3());
-		// observedObjects.add(flipperGame.getBuffer4());
+		observedObjects.add(flipperGame.link11);
+		observedObjects.add(flipperGame.link12);
+		observedObjects.add(flipperGame.link13);
+		observedObjects.add(flipperGame.link14);
+		observedObjects.add(flipperGame.getBuffer1());
+		observedObjects.add(flipperGame.getBuffer2());
+		observedObjects.add(flipperGame.getBuffer3());
+		observedObjects.add(flipperGame.getBuffer4());
+		observedObjects.add(flipperGame.buttonL1);
 
 		observedObjects.add(flipperGame.link21);
 		observedObjects.add(flipperGame.link22);
@@ -75,13 +84,17 @@ public class FlowObserver {
 		lengths = new HashMap<Integer, Integer>();
 
 		for (int i = 0; i < observedObjects.size(); i++) {
-			FlipperObject object = observedObjects.get(i);
-			if (object instanceof Storage) {
-				lengths.put(i, STORAGE_WIDTH);
-			} else if (object instanceof Switch) {
-				lengths.put(i, SWITCH_WIDTH);
-			} else if (object instanceof Link) {
-				lengths.put(i, MIN);
+			Object object = observedObjects.get(i);
+			if (object instanceof FlipperObject) {
+				if (object instanceof Storage) {
+					lengths.put(i, STORAGE_WIDTH);
+				} else if (object instanceof Switch) {
+					lengths.put(i, SWITCH_WIDTH);
+				} else if (object instanceof Link) {
+					lengths.put(i, MIN);
+				} else {
+					lengths.put(i, WIDTH);
+				}
 			} else {
 				lengths.put(i, WIDTH);
 			}
@@ -89,22 +102,30 @@ public class FlowObserver {
 
 	}
 
-	public void persist() {
-		Map<String, String> currentState = new LinkedHashMap<String, String>();
+	private Pair<String, String> getState(FlipperObject observedObject) {
+		logger.debug("Persisting state of object, key: " + observedObject.getName());
 
-		for (FlipperObject observedObject : observedObjects) {
-			logger.info("Persisting state of object, key: " + observedObject.getName());
+		int elements = observedObject.getQueue().size();
 
-			int elements = observedObject.getQueue().size();
+		String data = "";
 
-			String data;
+		if (elements == 0) {
+			data = empty;
+		} else if (elements == 1) {
 
-			if (elements == 0) {
-				data = empty;
-			} else if (elements == 1) {
+			data = observedObject.getQueue().get(0).getName();
+		} else {
 
-				data = observedObject.getQueue().get(0).getName();
-			} else {
+			if (observedObject instanceof Buffer) {
+				data = "["+elements + "]";
+
+			} else if(observedObject instanceof Switch){
+				Switch switch_ = (Switch) observedObject;
+				data += switch_.getQueue().get(3).getName();
+				data += "-";
+				data += switch_.getQueue().get(0).getName();
+			}
+			else {
 				data = "";
 				for (int e = 0; e < elements; e++) {
 					if (e != 0 && !(observedObject instanceof Storage)) {
@@ -114,8 +135,37 @@ public class FlowObserver {
 
 				}
 			}
+		}
 
-			currentState.put(observedObject.getName(), data);
+		return Pair.of(observedObject.getName(), data);
+	}
+
+	private Pair<String, String> getState(Button observedButtonObject) {
+
+		String name = observedButtonObject.getName();
+		String enabled = observedButtonObject.isEnabled() ? "E" : " ";
+		String pressed = observedButtonObject.isPressed() ? "P" : " ";
+		return Pair.of(name, enabled + pressed);
+	}
+
+	public void persist() {
+		Map<String, String> currentState = new LinkedHashMap<String, String>();
+
+		for (NamedObject observedObject : observedObjects) {
+
+			Pair<String, String> result = null;
+
+			if (observedObject instanceof FlipperObject) {
+				FlipperObject observedFlipperObject = (FlipperObject) observedObject;
+				result = getState(observedFlipperObject);
+			} else if (observedObject instanceof Button) {
+				Button observedButtonObject = (Button) observedObject;
+				result = getState(observedButtonObject);
+			} else {
+				result = Pair.of("X", "?");
+			}
+
+			currentState.put(result.getLeft(), result.getRight());
 
 		}
 
@@ -134,7 +184,7 @@ public class FlowObserver {
 		sb.append(stepHeading);
 		sb.append("|");
 		int h = 0;
-		for (FlipperObject object : observedObjects) {
+		for (NamedObject object : observedObjects) {
 			String heading = fixedLengthString(object.getName(), lengths.get(h));
 
 			sb.append(heading);
