@@ -4,7 +4,7 @@
 
 	<groupId>cern.ch</groupId>
 	<artifactId>cms.flipper</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<packaging>jar</packaging>
 
 	<name>cms.flipper</name>
