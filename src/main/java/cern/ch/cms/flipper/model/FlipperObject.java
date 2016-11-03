@@ -11,7 +11,7 @@ import cern.ch.cms.flipper.event.Data;
 public abstract class FlipperObject extends NamedObject {
 
 	/** Step of simulation progress in this object */
-	private final int progressStep;
+	protected final int progressStep;
 
 	/** Successors of this flipper object */
 	private final List<FlipperObject> successors;
@@ -44,7 +44,7 @@ public abstract class FlipperObject extends NamedObject {
 		if (!canAccept()) {
 			return false;
 		} else {
-			logger.debug(name + " received the data " + data.getName());
+			logger.info(name + " received the data " + data.getName());
 			data.setProgress(0);
 			queue.add(data);
 			awaiting = false;
@@ -175,6 +175,10 @@ public abstract class FlipperObject extends NamedObject {
 
 	public void setBusy(boolean busy) {
 		this.awaiting = busy;
+	}
+
+	public SimpleFifoQueue getQueue() {
+		return queue;
 	}
 
 }

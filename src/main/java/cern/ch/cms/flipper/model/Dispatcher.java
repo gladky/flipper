@@ -36,7 +36,8 @@ public class Dispatcher {
 					result = linksToTarget.get(i);
 					valid = true;
 					break;
-
+				} else {
+					logger.trace("bufu " + bufu.getName() + " is not available");
 				}
 			}
 
