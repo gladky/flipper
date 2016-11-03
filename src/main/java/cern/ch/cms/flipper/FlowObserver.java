@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.Buffer;
+import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
 import cern.ch.cms.flipper.model.Link;
 import cern.ch.cms.flipper.model.NamedObject;
@@ -46,6 +47,7 @@ public class FlowObserver {
 		observedObjects.add(flipperGame.getBuffer2());
 		observedObjects.add(flipperGame.getBuffer3());
 		observedObjects.add(flipperGame.getBuffer4());
+		observedObjects.add(flipperGame.dispatcher);
 		observedObjects.add(flipperGame.buttonL1);
 
 		observedObjects.add(flipperGame.link21);
@@ -161,7 +163,10 @@ public class FlowObserver {
 			} else if (observedObject instanceof Button) {
 				Button observedButtonObject = (Button) observedObject;
 				result = getState(observedButtonObject);
-			} else {
+			} else if(observedObject instanceof Dispatcher){
+				Dispatcher dispatcher = (Dispatcher) observedObject;
+				result = Pair.of(dispatcher.getName(), dispatcher.isBackpressure()? "BP":" ");
+			}else {
 				result = Pair.of("X", "?");
 			}
 

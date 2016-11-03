@@ -71,14 +71,14 @@ public class FlipperGame {
 	/* max 4 */
 	public final int linkBoost = 4;
 
-	private final Dispatcher dispatcher;
+	protected final Dispatcher dispatcher;
 
 	public FlipperGame() {
 
 		controller = new GameController();
 		factory = new FlipperObjectFactory(controller);
 
-		buttonL1 = factory.createButton("Lv0 btn");
+		buttonL1 = factory.createButton("Lv1 btn");
 		buttonHLT_L1 = factory.createButton("L1 btn");
 		buttonHLT_L2 = factory.createButton("L2 btn");
 		buttonHLT_L3 = factory.createButton("L3 btn");

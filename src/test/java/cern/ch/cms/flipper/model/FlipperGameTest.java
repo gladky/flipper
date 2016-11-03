@@ -106,12 +106,13 @@ public class FlipperGameTest {
 		FlowObserver observer = new FlowObserver(flipperGame);
 
 		Logger.getRootLogger().setLevel(Level.OFF);
-		Logger.getLogger(Switch.class).setLevel(Level.OFF);
-		Logger.getLogger(Clickable.class).setLevel(Level.OFF);
+		Logger.getLogger(Switch.class).setLevel(Level.INFO);
+		Logger.getLogger(Clickable.class).setLevel(Level.INFO);
 		Logger.getLogger(Button.class).setLevel(Level.OFF);
-		Logger.getLogger(FlipperObject.class).setLevel(Level.OFF);
+		Logger.getLogger(FlipperObject.class).setLevel(Level.INFO);
 		Logger.getLogger(Event.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);
+		Logger.getLogger(Dispatcher.class).setLevel(Level.INFO);
 		Logger.getLogger(FlowObserver.class).setLevel(Level.OFF);
 
 		int update = 0;

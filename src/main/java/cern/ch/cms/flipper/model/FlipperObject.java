@@ -23,10 +23,10 @@ public abstract class FlipperObject extends NamedObject {
 	protected final int capacity;
 
 	/**
-	 * Is awaiting data? true when some date is flowing to this objects (cannot
+	 * Is reserved? true when some date is flowing to this objects (cannot
 	 * accept more), false otherwise (optional use)
 	 */
-	private boolean awaiting;
+	private boolean reserved;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
 
@@ -47,7 +47,7 @@ public abstract class FlipperObject extends NamedObject {
 			logger.info(name + " received the data " + data.getName());
 			data.setProgress(0);
 			queue.add(data);
-			awaiting = false;
+			reserved = false;
 			return true;
 		}
 	}
@@ -63,7 +63,7 @@ public abstract class FlipperObject extends NamedObject {
 
 		if (!queue.isEmpty()) {
 			boolean localBackpressure = false;
-			
+
 			Data backpressureCause = null;
 
 			for (int i = 0; i < queue.size(); i++) {
@@ -146,7 +146,13 @@ public abstract class FlipperObject extends NamedObject {
 				allDirectAccept = false;
 			}
 		}
-		return allDirectAccept;
+
+		if (allDirectAccept) {
+			return true;
+		} else {
+			logger.info("Cannot send, all direct accept? " + allDirectAccept);
+			return false;
+		}
 
 	}
 
@@ -159,6 +165,8 @@ public abstract class FlipperObject extends NamedObject {
 		}
 	}
 
+
+
 	/** Indicator of simulation progress in this object, values: 0-99 */
 	public int[] getProgress() {
 
@@ -170,11 +178,11 @@ public abstract class FlipperObject extends NamedObject {
 	}
 
 	public boolean isBusy() {
-		return awaiting;
+		return reserved;
 	}
 
 	public void setBusy(boolean busy) {
-		this.awaiting = busy;
+		this.reserved = busy;
 	}
 
 	public SimpleFifoQueue getQueue() {

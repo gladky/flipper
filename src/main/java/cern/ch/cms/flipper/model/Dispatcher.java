@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-public class Dispatcher {
+public class Dispatcher extends NamedObject{
 
 	private List<FlipperObject> linksToTarget;
 	private List<FlipperObject> targets;
@@ -15,6 +15,7 @@ public class Dispatcher {
 	private static Logger logger = Logger.getLogger(Dispatcher.class);
 
 	public Dispatcher(List<FlipperObject> targets, List<FlipperObject> linksToTargets) {
+		super("Dispatcher");
 		this.targets = targets;
 		this.linksToTarget = linksToTargets;
 		this.valid = false;
@@ -22,6 +23,7 @@ public class Dispatcher {
 	}
 
 	public FlipperObject findAvailableTarget() {
+		backpressure = false;
 
 		if (valid) {
 			logger.debug("Returning valid result without recalculation " + result.name);
