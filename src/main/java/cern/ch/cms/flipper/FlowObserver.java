@@ -65,12 +65,18 @@ public class FlowObserver {
 		observedObjects.add(flipperGame.link36);
 
 		observedObjects.add(flipperGame.getBufuL1());
+		observedObjects.add(flipperGame.buttonHLT_L1);
 		observedObjects.add(flipperGame.getBufuL2());
+		observedObjects.add(flipperGame.buttonHLT_L2);
 		observedObjects.add(flipperGame.getBufuL3());
+		observedObjects.add(flipperGame.buttonHLT_L3);
 
 		observedObjects.add(flipperGame.getBufuR1());
+		observedObjects.add(flipperGame.buttonHLT_R1);
 		observedObjects.add(flipperGame.getBufuR2());
+		observedObjects.add(flipperGame.buttonHLT_R2);
 		observedObjects.add(flipperGame.getBufuR3());
+		observedObjects.add(flipperGame.buttonHLT_R3);
 
 		observedObjects.add(flipperGame.link41);
 		observedObjects.add(flipperGame.link42);
@@ -98,7 +104,12 @@ public class FlowObserver {
 					lengths.put(i, WIDTH);
 				}
 			} else {
-				lengths.put(i, WIDTH);
+				if (object instanceof Button) {
+					lengths.put(i, MIN);
+				} else {
+
+					lengths.put(i, WIDTH);
+				}
 			}
 		}
 
@@ -119,15 +130,14 @@ public class FlowObserver {
 		} else {
 
 			if (observedObject instanceof Buffer) {
-				data = "["+elements + "]";
+				data = "[" + elements + "]";
 
-			} else if(observedObject instanceof Switch){
+			} else if (observedObject instanceof Switch) {
 				Switch switch_ = (Switch) observedObject;
 				data += switch_.getQueue().get(3).getName();
 				data += "-";
 				data += switch_.getQueue().get(0).getName();
-			}
-			else {
+			} else {
 				data = "";
 				for (int e = 0; e < elements; e++) {
 					if (e != 0 && !(observedObject instanceof Storage)) {
@@ -163,19 +173,19 @@ public class FlowObserver {
 			} else if (observedObject instanceof Button) {
 				Button observedButtonObject = (Button) observedObject;
 				result = getState(observedButtonObject);
-			} else if(observedObject instanceof Dispatcher){
+			} else if (observedObject instanceof Dispatcher) {
 				Dispatcher dispatcher = (Dispatcher) observedObject;
 				FlipperObject target = dispatcher.getResult();
-				String  data = "";
-				if(target != null){
+				String data = "";
+				if (target != null) {
 					data += target.getName();
 				}
-				if(dispatcher.isBackpressure()){
+				if (dispatcher.isBackpressure()) {
 					data += "BP";
 				}
-				
+
 				result = Pair.of(dispatcher.getName(), data);
-			}else {
+			} else {
 				result = Pair.of("X", "?");
 			}
 
