@@ -35,8 +35,11 @@ public abstract class Clickable extends FlipperObject {
 		if (pressed) {
 			logger.info(name + " accepted the data " + queue.peek().getName() + " in time");
 			this.timeoutProgress = 0;
-			this.button.disable();
-			return super.canSend();
+			boolean canSend = super.canSend();
+			if(canSend){
+				this.button.disable();
+			}
+			return canSend;
 		} else {
 			this.timeoutProgress += timeoutStep;
 			if (timeoutProgress > 99) {
