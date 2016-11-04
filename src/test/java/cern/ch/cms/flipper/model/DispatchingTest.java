@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Fragment;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 /**
  * <code><pre>
@@ -62,23 +63,23 @@ public class DispatchingTest {
 		leftHLTButton = new Button("test-button-bufu-1");
 		rightHLTButton = new Button("test-button-bufu-1");
 
-		buffer1 = new Buffer("[buffer1]", 12, 20, 10, level1Button);
-		buffer2 = new Buffer("[buffer2]", 12, 20, 10, level1Button);
-		buffer3 = new Buffer("[buffer3]", 12, 20, 10, level1Button);
-		buffer4 = new Buffer("[buffer4]", 12, 20, 10, level1Button);
+		buffer1 = new Buffer("[buffer1]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
+		buffer2 = new Buffer("[buffer2]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
+		buffer3 = new Buffer("[buffer3]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
+		buffer4 = new Buffer("[buffer4]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
 
-		switch_ = Mockito.spy(new Switch("[test-switch]"));
+		switch_ = Mockito.spy(new Switch("[test-switch]", new SoundPlayer("sp")));
 
-		link1 = new Link("[buffer-switch-link-1]", 1, 25);
-		link2 = new Link("[buffer-switch-link-2]", 1, 25);
-		link3 = new Link("[buffer-switch-link-3]", 1, 25);
-		link4 = new Link("[buffer-switch-link-4]", 1, 25);
+		link1 = new Link("[buffer-switch-link-1]", 1, 25, new SoundPlayer("sp"));
+		link2 = new Link("[buffer-switch-link-2]", 1, 25, new SoundPlayer("sp"));
+		link3 = new Link("[buffer-switch-link-3]", 1, 25, new SoundPlayer("sp"));
+		link4 = new Link("[buffer-switch-link-4]", 1, 25, new SoundPlayer("sp"));
 
-		link5 = new Link("[switch-bufu-link-left]", 1, 25);
-		link6 = new Link("[switch-bufu-link-right]", 1, 25);
+		link5 = new Link("[switch-bufu-link-left]", 1, 25, new SoundPlayer("sp"));
+		link6 = new Link("[switch-bufu-link-right]", 1, 25, new SoundPlayer("sp"));
 
-		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 5, 25, leftHLTButton));
-		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 5, 25, rightHLTButton));
+		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 5, 25, leftHLTButton, new SoundPlayer("sp")));
+		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 5, 25, rightHLTButton, new SoundPlayer("sp")));
 
 		buffer1.getSuccessors().add(link1);
 		buffer2.getSuccessors().add(link2);

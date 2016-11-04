@@ -11,20 +11,20 @@ import org.apache.log4j.Logger;
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class GameController {
 
 	private final List<FlipperObject> flipperObjects;
 	private final Set<Button> buttons;
 	private Dispatcher dispatcher;
-	
+	private SoundPlayer soundPlayer;
 
 	/* Optional: for debuging */
 	public FlowObserver observer;
 
 	private static final Logger logger = Logger.getLogger(GameController.class);
 
-	
 	public GameController() {
 		this.flipperObjects = new ArrayList<FlipperObject>();
 		this.buttons = new LinkedHashSet<Button>();
@@ -46,16 +46,18 @@ public class GameController {
 			logger.trace("Processing: " + flipperObject.getName());
 			flipperObject.doStep();
 		}
-		
-		if(observer != null){
+
+		if (observer != null) {
 			observer.persist();
 		}
+		
 
 		for (Button button : buttons) {
 			button.doStep();
 		}
 		dispatcher.invalidate();
-		
+		soundPlayer.flush();
+
 	}
 
 	public Set<Button> getButtons() {
@@ -65,4 +67,9 @@ public class GameController {
 	public void setDispatcher(Dispatcher dispatcher) {
 		this.dispatcher = dispatcher;
 	}
+
+	public void setSoundPlayer(SoundPlayer soundPlayer) {
+		this.soundPlayer = soundPlayer;
+	}
+
 }

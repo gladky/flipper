@@ -3,7 +3,7 @@ package cern.ch.cms.flipper.event;
 import cern.ch.cms.flipper.model.FlipperObject;
 
 public abstract class Data {
-	
+
 	private int progress;
 
 	private boolean dispatched;
@@ -12,9 +12,22 @@ public abstract class Data {
 
 	private final String name;
 
-	public Data(String name, boolean isFragment) {
-		this.name = name;
+	private final boolean isFragment;
+
+	private final boolean isInteresting;
+
+	public Data(String name, boolean isFragment, boolean isInteresting) {
+
 		this.isFragment = isFragment;
+		this.isInteresting = isInteresting;
+		String modifiedName;
+
+		if (this.isInteresting && !this.isFragment) {
+			modifiedName = name.toUpperCase();
+		} else {
+			modifiedName = name;
+		}
+		this.name = modifiedName;
 	}
 
 	public String getName() {
@@ -49,7 +62,13 @@ public abstract class Data {
 	public void setProgress(int progress) {
 		this.progress = progress;
 	}
-	
-	private final boolean isFragment;
+
+	public boolean isInteresting() {
+		return isInteresting;
+	}
+
+	public boolean isFragment() {
+		return isFragment;
+	}
 
 }

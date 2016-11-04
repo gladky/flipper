@@ -7,13 +7,14 @@ import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Event;
 import cern.ch.cms.flipper.event.Fragment;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlipperObjectTest {
 
 	@Test
 	public void acceptTest() {
-		FlipperObject link = new Link("test-link", 1, 25);
-		FlipperObject storage = new Storage("[storage]", 10);
+		FlipperObject link = new Link("test-link", 1, 25, new SoundPlayer("sp"));
+		FlipperObject storage = new Storage("[storage]", 10, new SoundPlayer("sp"));
 		link.getSuccessors().add(storage);
 
 		Data f1 = new Fragment();
@@ -47,8 +48,8 @@ public class FlipperObjectTest {
 
 	@Test
 	public void forceInsertTest() {
-		FlipperObject link = new Link("test-link", 1, 25);
-		FlipperObject storage = new Storage("[storage]", 10);
+		FlipperObject link = new Link("test-link", 1, 25, new SoundPlayer("sp"));
+		FlipperObject storage = new Storage("[storage]", 10, new SoundPlayer("sp"));
 		link.getSuccessors().add(storage);
 		Data f1 = new Fragment();
 		Data f2 = new Fragment();
@@ -66,8 +67,8 @@ public class FlipperObjectTest {
 	@Test
 	public void linksDontWorkAsBuffers() {
 		Button button = new Button("[test-button]");
-		FlipperObject link = new Link("[test-link]", 1, 25);
-		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button);
+		FlipperObject link = new Link("[test-link]", 1, 25,new SoundPlayer("sp"));
+		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button,new SoundPlayer("sp"));
 		link.getSuccessors().add(bufu);
 
 		FlipperObject[] objects = { bufu, link };
