@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Fragment;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 /**
  * <pre>
@@ -33,13 +34,13 @@ public class SwitchToBufusTest {
 
 	@Before
 	public void initializeFlipperObjects() {
-		switchSpy = Mockito.spy(new Switch("[test-switch]"));
+		switchSpy = Mockito.spy(new Switch("[test-switch]", new SoundPlayer("sp")));
 
-		link1 = new Link("[test-link-1]", 1, 25);
-		link2 = new Link("[test-link-2]", 1, 25);
+		link1 = new Link("[test-link-1]", 1, 25, new SoundPlayer("sp"));
+		link2 = new Link("[test-link-2]", 1, 25, new SoundPlayer("sp"));
 
-		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 10, 25, new Button("[test-button-1]")));
-		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 10, 25, new Button("[test-button-2]")));
+		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 10, 25, new Button("[test-button-1]"), new SoundPlayer("sp")));
+		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 10, 25, new Button("[test-button-2]"), new SoundPlayer("sp")));
 
 		switchSpy.getSuccessors().add(link1);
 		switchSpy.getSuccessors().add(link2);

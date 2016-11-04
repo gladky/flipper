@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import cern.ch.cms.flipper.SimpleFifoQueue;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Event;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class Switch extends FlipperObject {
 
@@ -13,11 +14,11 @@ public class Switch extends FlipperObject {
 
 	private static final Logger logger = Logger.getLogger(Switch.class);
 
-	public Switch(String name) {
+	public Switch(String name, SoundPlayer soundPlayer) {
 
 		// arg 2nd: switch has always capacity of processing 4 frangents
 		// arg 3nd: switch is very fast so step is big
-		super(name, 4, 50);
+		super(name, 4, 50, soundPlayer);
 		this.outputQueue = new SimpleFifoQueue(1);
 	}
 

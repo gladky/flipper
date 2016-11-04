@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public abstract class Clickable extends FlipperObject {
 
@@ -13,16 +14,16 @@ public abstract class Clickable extends FlipperObject {
 
 	private static final Logger logger = Logger.getLogger(Clickable.class);
 
-	public Clickable(String name, int capacity, int progressStep, int timeoutStep, Button button) {
+	public Clickable(String name, int capacity, int progressStep, int timeoutStep, Button button, SoundPlayer soundPlayer) {
 
-		super(name, capacity, progressStep);
+		super(name, capacity, progressStep,soundPlayer);
 		this.timeoutStep = timeoutStep;
 		this.button = button;
 	}
 
 	@Override
 	protected boolean canSend() {
-		
+
 		dispatch();
 
 		/* when clickable wants to send data, button becomes enabled */
@@ -36,8 +37,10 @@ public abstract class Clickable extends FlipperObject {
 			logger.info(name + " accepted the data " + queue.peek().getName() + " in time");
 			this.timeoutProgress = 0;
 			boolean canSend = super.canSend();
-			if(canSend){
+			if (canSend) {
+				Data data = this.queue.peek();
 				this.button.disable();
+				registerAcceptedSound(data.isInteresting());
 			}
 			return canSend;
 		} else {
@@ -47,16 +50,21 @@ public abstract class Clickable extends FlipperObject {
 				Data data = this.queue.poll();
 				logger.info(name + " data " + data.getName() + " not accepted in given timespan, rejecting");
 				button.disable();
+				registerMissedSound(data.isInteresting());
 			}
 			return false;
 		}
 	}
 
+	protected abstract void registerAcceptedSound(boolean interesting);
+
+	protected abstract void registerMissedSound(boolean interesting);
+
 	protected boolean backpressure() {
 		return false;
 	}
-	
-	protected void dispatch(){
-		
+
+	protected void dispatch() {
+
 	}
 }

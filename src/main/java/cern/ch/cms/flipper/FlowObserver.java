@@ -18,6 +18,7 @@ import cern.ch.cms.flipper.model.Link;
 import cern.ch.cms.flipper.model.NamedObject;
 import cern.ch.cms.flipper.model.Storage;
 import cern.ch.cms.flipper.model.Switch;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlowObserver {
 
@@ -25,6 +26,7 @@ public class FlowObserver {
 	private static final int WIDTH = 4;
 	private static final int SWITCH_WIDTH = 5;
 	private static final int STORAGE_WIDTH = 14;
+	private static final int SOUND_WIDTH = 5;
 	private static final String empty = "";
 
 	private List<NamedObject> observedObjects;
@@ -88,6 +90,7 @@ public class FlowObserver {
 		observedObjects.add(flipperGame.link48);
 
 		observedObjects.add(flipperGame.getStorage());
+		observedObjects.add(flipperGame.getSoundPlayer());
 
 		lengths = new HashMap<Integer, Integer>();
 
@@ -106,6 +109,8 @@ public class FlowObserver {
 			} else {
 				if (object instanceof Button) {
 					lengths.put(i, MIN);
+				} else if (object instanceof SoundPlayer) {
+					lengths.put(i, SOUND_WIDTH);
 				} else {
 
 					lengths.put(i, WIDTH);
@@ -185,6 +190,17 @@ public class FlowObserver {
 				}
 
 				result = Pair.of(dispatcher.getName(), data);
+			} else if (observedObject instanceof SoundPlayer) {
+				SoundPlayer soundPlayer = (SoundPlayer) observedObject;
+				String data = "";
+				for (int i = 0; i < soundPlayer.getSounds().size(); i++) {
+					if (i != 0) {
+						data += ",";
+					}
+					data += soundPlayer.getSounds().get(i);
+				}
+
+				result = Pair.of(soundPlayer.getName(), data);
 			} else {
 				result = Pair.of("X", "?");
 			}
@@ -194,7 +210,7 @@ public class FlowObserver {
 		}
 
 		states.add(currentState);
-		logger.info("Persisted " + currentState.size() + " objects");
+		logger.debug("Persisted " + currentState.size() + " objects");
 
 	}
 

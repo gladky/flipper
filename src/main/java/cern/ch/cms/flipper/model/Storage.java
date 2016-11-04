@@ -1,9 +1,11 @@
 package cern.ch.cms.flipper.model;
 
+import cern.ch.cms.flipper.sounds.SoundPlayer;
+
 public class Storage extends FlipperObject {
 
-	public Storage(String name, int capacity) {
-		super(name, capacity, 0);
+	public Storage(String name, int capacity, SoundPlayer soundPlayer) {
+		super(name, capacity, 0, soundPlayer);
 	}
 
 	@Override

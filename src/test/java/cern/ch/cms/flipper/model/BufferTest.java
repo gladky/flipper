@@ -10,6 +10,7 @@ import org.junit.Test;
 import cern.ch.cms.flipper.FlipperObjectTestBase;
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Fragment;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class BufferTest extends FlipperObjectTestBase {
 
@@ -20,7 +21,8 @@ public class BufferTest extends FlipperObjectTestBase {
 	public void capacityTest() {
 
 		int capacity = 12;
-		FlipperObject buffer = new Buffer("test-buffer", capacity, 10, 10, new Button("test-button"));
+		FlipperObject buffer = new Buffer("test-buffer", capacity, 10, 10, new Button("test-button"),
+				new SoundPlayer("sp"),true);
 
 		for (int i = 0; i < capacity; i++) {
 			Assert.assertTrue(buffer.canAccept());
@@ -53,8 +55,8 @@ public class BufferTest extends FlipperObjectTestBase {
 		int capacity = 12;
 		Button button = new Button("test-button");
 		buttons = new Button[] { button };
-		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, button);
-		FlipperObject storage = new Storage("storage", 10);
+		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, button, new SoundPlayer("sp"),true);
+		FlipperObject storage = new Storage("storage", 10, new SoundPlayer("sp"));
 		Dispatcher dispatcher = new Dispatcher(Arrays.asList(storage), Arrays.asList(storage));
 		objects = new FlipperObject[] { storage, buffer };
 

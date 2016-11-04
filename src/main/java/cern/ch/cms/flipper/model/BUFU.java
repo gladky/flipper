@@ -4,14 +4,16 @@ import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
+import cern.ch.cms.flipper.sounds.Sound;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class BUFU extends Clickable {
 
 	private Logger logger = Logger.getLogger(BUFU.class);
 
-	public BUFU(String name, int progressStep, int timeoutStep, Button button) {
+	public BUFU(String name, int progressStep, int timeoutStep, Button button, SoundPlayer soundPlayer) {
 		// capacity is always 1 as bufu may process one event
-		super(name, 1, progressStep, timeoutStep, button);
+		super(name, 1, progressStep, timeoutStep, button,soundPlayer);
 	}
 
 	@Override
@@ -66,6 +68,25 @@ public class BUFU extends Clickable {
 			for (FlipperObject next : successor.getSuccessors()) {
 				reserveLinks(next);
 			}
+		}
+	}
+
+	@Override
+	protected void registerAcceptedSound(boolean interesting) {
+		if (interesting) {
+			soundPlayer.register(Sound.AcceptedInterestingEvent);
+		} else {
+			soundPlayer.register(Sound.AcceptedNotInteresingEvent);
+		}
+
+	}
+
+	@Override
+	protected void registerMissedSound(boolean interesting) {
+		if (interesting) {
+			soundPlayer.register(Sound.MissedInterestedEvent);
+		} else {
+			soundPlayer.register(Sound.MissedNotInterestingEvent);
 		}
 	}
 

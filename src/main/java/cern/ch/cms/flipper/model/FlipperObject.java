@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.SimpleFifoQueue;
 import cern.ch.cms.flipper.event.Data;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public abstract class FlipperObject extends NamedObject {
 
@@ -27,16 +28,19 @@ public abstract class FlipperObject extends NamedObject {
 	 * accept more), false otherwise (optional use)
 	 */
 	private boolean reserved;
+	
+	protected final SoundPlayer soundPlayer;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
 
-	public FlipperObject(String name, int capacity, int progressStep) {
+	public FlipperObject(String name, int capacity, int progressStep, SoundPlayer soundPlayer) {
 		super(name);
 		this.progressStep = progressStep;
 		this.successors = new ArrayList<FlipperObject>();
 		this.capacity = capacity;
 		this.queue = new SimpleFifoQueue(capacity);
 		this.setBusy(false);
+		this.soundPlayer = soundPlayer;
 	}
 
 	/** Get the data */

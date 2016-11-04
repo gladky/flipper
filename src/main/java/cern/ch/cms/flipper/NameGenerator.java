@@ -21,15 +21,26 @@ public class NameGenerator {
 		nameMapper.put("40", "K");
 		nameMapper.put("44", "L");
 		nameMapper.put("48", "M");
-		nameMapper.put("52", "O");
-		nameMapper.put("56", "P");
+		nameMapper.put("52", "N");
+		nameMapper.put("56", "O");
+		nameMapper.put("60", "P");
+		nameMapper.put("64", "Q");
+		nameMapper.put("68", "R");
+		nameMapper.put("72", "S");
+		nameMapper.put("76", "T");
+		nameMapper.put("80", "U");
+		nameMapper.put("84", "V");
+		nameMapper.put("88", "W");
+		nameMapper.put("92", "X");
+		nameMapper.put("96", "Y");
+		nameMapper.put("100", "Z");
 	}
 
 	public static String generateSimpleName(String fragmentName) {
 		if (nameMapper.containsKey(fragmentName)) {
 			return nameMapper.get(fragmentName);
 		} else {
-			return "X";
+			return "+";
 		}
 	}
 

@@ -10,6 +10,7 @@ import cern.ch.cms.flipper.event.Fragment;
 import cern.ch.cms.flipper.model.Buffer;
 import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlipperGame {
 
@@ -73,11 +74,23 @@ public class FlipperGame {
 
 	protected final Dispatcher dispatcher;
 
+	/**
+	 * Constructor with default object factory
+	 */
 	public FlipperGame() {
+		this(new FlipperObjectFactory());
+	}
 
-		controller = new GameController();
+	/**
+	 * Main constructor of the game
+	 * 
+	 * @param factory
+	 *            flipper object factory
+	 */
+	public FlipperGame(FlipperObjectFactory factory) {
 
-		factory = new FlipperObjectFactory(controller);
+		this.factory = factory;
+		this.controller = factory.getController();
 
 		buttonL1 = factory.createButton("Lv1 btn");
 		buttonHLT_L1 = factory.createButton("L1 btn");
@@ -93,10 +106,10 @@ public class FlipperGame {
 		link13 = factory.createLink("13", 20 / linkBoost);
 		link14 = factory.createLink("14", 20 / linkBoost);
 
-		buffer1 = factory.createBuffer("buf1", buttonL1);
-		buffer2 = factory.createBuffer("buf2", buttonL1);
-		buffer3 = factory.createBuffer("buf3", buttonL1);
-		buffer4 = factory.createBuffer("buf4", buttonL1);
+		buffer1 = factory.createBuffer("buf1", buttonL1, true);
+		buffer2 = factory.createBuffer("buf2", buttonL1, true);
+		buffer3 = factory.createBuffer("buf3", buttonL1, true);
+		buffer4 = factory.createBuffer("buf4", buttonL1, false);
 
 		/* links to switch */
 		link21 = factory.createLink("21", 20 / linkBoost);
@@ -192,10 +205,10 @@ public class FlipperGame {
 
 	public void generateNewFragments() {
 
-		Data f1 = new Fragment();
-		Data f2 = new Fragment();
-		Data f3 = new Fragment();
-		Data f4 = new Fragment();
+		Data f1 = new Fragment(false);
+		Data f2 = new Fragment(true);
+		Data f3 = new Fragment(false);
+		Data f4 = new Fragment(true);
 
 		link11.insert(f1);
 		link12.insert(f2);
@@ -299,5 +312,9 @@ public class FlipperGame {
 
 	public Buffer getBuffer4() {
 		return buffer4;
+	}
+
+	public SoundPlayer getSoundPlayer() {
+		return factory.getSoundPlayer();
 	}
 }
