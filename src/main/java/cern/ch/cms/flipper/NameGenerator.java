@@ -8,32 +8,32 @@ public class NameGenerator {
 	private static Map<String, String> nameMapper = new HashMap<String, String>();
 
 	static {
-		nameMapper.put("0", "A");
-		nameMapper.put("4", "B");
-		nameMapper.put("8", "C");
-		nameMapper.put("12", "D");
-		nameMapper.put("16", "E");
-		nameMapper.put("20", "F");
-		nameMapper.put("24", "G");
-		nameMapper.put("28", "H");
-		nameMapper.put("32", "I");
-		nameMapper.put("36", "J");
-		nameMapper.put("40", "K");
-		nameMapper.put("44", "L");
-		nameMapper.put("48", "M");
-		nameMapper.put("52", "N");
-		nameMapper.put("56", "O");
-		nameMapper.put("60", "P");
-		nameMapper.put("64", "Q");
-		nameMapper.put("68", "R");
-		nameMapper.put("72", "S");
-		nameMapper.put("76", "T");
-		nameMapper.put("80", "U");
-		nameMapper.put("84", "V");
-		nameMapper.put("88", "W");
-		nameMapper.put("92", "X");
-		nameMapper.put("96", "Y");
-		nameMapper.put("100", "Z");
+		nameMapper.put("0", "a");
+		nameMapper.put("4", "b");
+		nameMapper.put("8", "c");
+		nameMapper.put("12", "d");
+		nameMapper.put("16", "e");
+		nameMapper.put("20", "f");
+		nameMapper.put("24", "g");
+		nameMapper.put("28", "h");
+		nameMapper.put("32", "i");
+		nameMapper.put("36", "j");
+		nameMapper.put("40", "k");
+		nameMapper.put("44", "l");
+		nameMapper.put("48", "m");
+		nameMapper.put("52", "n");
+		nameMapper.put("56", "o");
+		nameMapper.put("60", "p");
+		nameMapper.put("64", "q");
+		nameMapper.put("68", "r");
+		nameMapper.put("72", "s");
+		nameMapper.put("76", "t");
+		nameMapper.put("80", "u");
+		nameMapper.put("84", "v");
+		nameMapper.put("88", "w");
+		nameMapper.put("92", "x");
+		nameMapper.put("96", "y");
+		nameMapper.put("100", "z");
 	}
 
 	public static String generateSimpleName(String fragmentName) {

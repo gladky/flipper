@@ -16,10 +16,18 @@ public abstract class Data {
 
 	private final boolean isInteresting;
 
-	public Data(String name, boolean isFragment, boolean isInteresing) {
-		this.name = name;
+	public Data(String name, boolean isFragment, boolean isInteresting) {
+
 		this.isFragment = isFragment;
-		this.isInteresting = isInteresing;
+		this.isInteresting = isInteresting;
+		String modifiedName;
+
+		if (this.isInteresting && !this.isFragment) {
+			modifiedName = name.toUpperCase();
+		} else {
+			modifiedName = name;
+		}
+		this.name = modifiedName;
 	}
 
 	public String getName() {

@@ -110,6 +110,7 @@ public class FlipperGameTest {
 		Logger.getLogger(Clickable.class).setLevel(Level.OFF);
 		Logger.getLogger(Button.class).setLevel(Level.OFF);
 		Logger.getLogger(Buffer.class).setLevel(Level.OFF);
+		Logger.getLogger(BUFU.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperObject.class).setLevel(Level.OFF);
 		Logger.getLogger(Event.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);

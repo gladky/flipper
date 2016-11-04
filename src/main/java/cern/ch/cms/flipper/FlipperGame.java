@@ -69,6 +69,8 @@ public class FlipperGame {
 
 	private final FlipperObject switch_;
 
+	private final FragmentGenerator fragmentGenerator;
+
 	/* max 4 */
 	public final int linkBoost = 4;
 
@@ -201,19 +203,13 @@ public class FlipperGame {
 		/* FIXME: Use this line for debugging, In production remove it */
 		controller.observer = new FlowObserver(this);
 
+		fragmentGenerator = new FragmentGenerator(link11, link12, link13, link14);
+
 	}
 
 	public void generateNewFragments() {
 
-		Data f1 = new Fragment(false);
-		Data f2 = new Fragment(true);
-		Data f3 = new Fragment(false);
-		Data f4 = new Fragment(true);
-
-		link11.insert(f1);
-		link12.insert(f2);
-		link13.insert(f3);
-		link14.insert(f4);
+		fragmentGenerator.generateAndInsertFragments();
 
 	}
 

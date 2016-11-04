@@ -30,6 +30,7 @@ public class Event extends Data {
 		// only)
 		// String name = "e" + i;
 		String name = NameGenerator.generateSimpleName(d.getName());
+		
 		logger.debug("Generated name is: " + name);
 
 		return name;

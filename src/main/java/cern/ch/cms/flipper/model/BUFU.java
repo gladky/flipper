@@ -13,7 +13,7 @@ public class BUFU extends Clickable {
 
 	public BUFU(String name, int progressStep, int timeoutStep, Button button, SoundPlayer soundPlayer) {
 		// capacity is always 1 as bufu may process one event
-		super(name, 1, progressStep, timeoutStep, button,soundPlayer);
+		super(name, 1, progressStep, timeoutStep, button, soundPlayer);
 	}
 
 	@Override
@@ -30,9 +30,10 @@ public class BUFU extends Clickable {
 		}
 
 		if (basicCheck && allLinksFree) {
+			logger.info(name + " Can send");
 			return true;
 		} else {
-			logger.info("Cannot send, all links free? " + allLinksFree);
+			logger.info(name + " Cannot send, all links free? " + allLinksFree);
 			return false;
 		}
 
@@ -88,6 +89,12 @@ public class BUFU extends Clickable {
 		} else {
 			soundPlayer.register(Sound.MissedNotInterestingEvent);
 		}
+	}
+
+	@Override
+	public boolean insert(Data data) {
+		data.setDispatched(false);
+		return super.insert(data);
 	}
 
 }
