@@ -165,7 +165,16 @@ public class FlowObserver {
 				result = getState(observedButtonObject);
 			} else if(observedObject instanceof Dispatcher){
 				Dispatcher dispatcher = (Dispatcher) observedObject;
-				result = Pair.of(dispatcher.getName(), dispatcher.isBackpressure()? "BP":" ");
+				FlipperObject target = dispatcher.getResult();
+				String  data = "";
+				if(target != null){
+					data += target.getName();
+				}
+				if(dispatcher.isBackpressure()){
+					data += "BP";
+				}
+				
+				result = Pair.of(dispatcher.getName(), data);
 			}else {
 				result = Pair.of("X", "?");
 			}

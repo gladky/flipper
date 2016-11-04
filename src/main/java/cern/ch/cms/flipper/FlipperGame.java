@@ -76,6 +76,7 @@ public class FlipperGame {
 	public FlipperGame() {
 
 		controller = new GameController();
+
 		factory = new FlipperObjectFactory(controller);
 
 		buttonL1 = factory.createButton("Lv1 btn");
@@ -183,6 +184,10 @@ public class FlipperGame {
 
 		link44.getSuccessors().add(storage);
 		link48.getSuccessors().add(storage);
+
+		/* FIXME: Use this line for debugging, In production remove it */
+		controller.observer = new FlowObserver(this);
+
 	}
 
 	public void generateNewFragments() {
