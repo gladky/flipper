@@ -19,7 +19,7 @@ public class Event extends Data {
 	}
 
 	private static String generateSimpleName(String i) {
-		// for the production do NOT use NameGenerator (its for debugging only)
+		// FIXME: for the production do NOT use NameGenerator (its for debugging only)
 		// String name = "e" + i;
 		String name = NameGenerator.generateSimpleName(i);
 		logger.debug("Generated name is: " + name);
