@@ -42,6 +42,7 @@ public abstract class FlipperObject extends NamedObject {
 	/** Get the data */
 	public boolean insert(Data data) {
 		if (!canAccept()) {
+			logger.info(name + " refused insert of data " + data.getName());
 			return false;
 		} else {
 			logger.info(name + " received the data " + data.getName());
@@ -158,14 +159,15 @@ public abstract class FlipperObject extends NamedObject {
 
 	protected void sendData() {
 		Data data = queue.poll();
+		if (data.isDispatched()) {
+			logger.info("Sending dispatched data " + data.getName() + "  to target " + data.getTarget().getName());
+		}
 		logger.trace(name + " removing data " + data.getName() + " from queue, now size is: " + queue.size());
 
 		for (FlipperObject successor : successors) {
 			successor.insert(data);
 		}
 	}
-
-
 
 	/** Indicator of simulation progress in this object, values: 0-99 */
 	public int[] getProgress() {
