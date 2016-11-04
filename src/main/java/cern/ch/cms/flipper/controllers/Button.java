@@ -27,6 +27,7 @@ public class Button extends NamedObject {
 		logger.debug(name + " Button enabled");
 		enabled = true;
 		pressed = false;
+		disableRequest = false;
 	}
 
 	public boolean press() {
@@ -34,6 +35,7 @@ public class Button extends NamedObject {
 		if (enabled) {
 			logger.debug(name + " Button pressed when enabled");
 			pressed = true;
+			//isableRequest = false;
 			return true;
 		} else {
 			logger.debug(name + " Ignoring button pressed");

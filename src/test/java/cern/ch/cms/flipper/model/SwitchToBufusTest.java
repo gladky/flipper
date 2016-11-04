@@ -61,14 +61,14 @@ public class SwitchToBufusTest {
 		doSteps(objects);
 		Mockito.verify(switchSpy, Mockito.times(1)).sendData();
 		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
-		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
+		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 
 		doSteps(objects);
-		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
+		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 		doSteps(objects);
-		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
+		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 		doSteps(objects);
-		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
+		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 		doSteps(objects);
 		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 	}
@@ -84,7 +84,7 @@ public class SwitchToBufusTest {
 		Mockito.verify(switchSpy, Mockito.times(1)).sendData();
 		Mockito.verify(bufu1, Mockito.times(2)).canAccept();
 		Mockito.verify(bufu2, Mockito.times(0)).canAccept();
-		Mockito.verify(bufu1, Mockito.times(0)).insert(Mockito.any(Data.class));
+		Mockito.verify(bufu1, Mockito.times(1)).insert(Mockito.any(Data.class));
 
 		insertNewFragmentsToSwitch(bufu2);
 		doSteps(objects);

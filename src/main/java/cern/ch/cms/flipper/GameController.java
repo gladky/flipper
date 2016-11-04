@@ -17,12 +17,18 @@ public class GameController {
 	private final List<FlipperObject> flipperObjects;
 	private final Set<Button> buttons;
 	private Dispatcher dispatcher;
+	
+
+	/* Optional: for debuging */
+	public FlowObserver observer;
 
 	private static final Logger logger = Logger.getLogger(GameController.class);
 
+	
 	public GameController() {
 		this.flipperObjects = new ArrayList<FlipperObject>();
 		this.buttons = new LinkedHashSet<Button>();
+		this.observer = null;
 	}
 
 	public List<FlipperObject> getFlipperObjects() {
@@ -39,6 +45,10 @@ public class GameController {
 			FlipperObject flipperObject = li.previous();
 			logger.trace("Processing: " + flipperObject.getName());
 			flipperObject.doStep();
+		}
+		
+		if(observer != null){
+			observer.persist();
 		}
 
 		for (Button button : buttons) {

@@ -103,15 +103,16 @@ public class FlipperGameTest {
 	public void stressTest() {
 
 		FlipperGame flipperGame = new FlipperGame();
-		FlowObserver observer = new FlowObserver(flipperGame);
 
 		Logger.getRootLogger().setLevel(Level.OFF);
 		Logger.getLogger(Switch.class).setLevel(Level.OFF);
 		Logger.getLogger(Clickable.class).setLevel(Level.OFF);
 		Logger.getLogger(Button.class).setLevel(Level.OFF);
+		Logger.getLogger(Buffer.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperObject.class).setLevel(Level.OFF);
 		Logger.getLogger(Event.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);
+		Logger.getLogger(Dispatcher.class).setLevel(Level.OFF);
 		Logger.getLogger(FlowObserver.class).setLevel(Level.OFF);
 
 		int update = 0;
@@ -141,7 +142,7 @@ public class FlipperGameTest {
 				flipperGame.pressButtonHLT_R1();
 				flipperGame.pressButtonHLT_R2();
 				flipperGame.pressButtonHLT_R3();
-				observer.persist();
+				//observer.persist();
 				flipperGame.doStep();
 				update++;
 				logger.debug("Update" + update + " ------------------------------ update " + update);
@@ -160,7 +161,7 @@ public class FlipperGameTest {
 			flipperGame.pressButtonHLT_R1();
 			flipperGame.pressButtonHLT_R2();
 			flipperGame.pressButtonHLT_R3();
-			observer.persist();
+			//observer.persist();
 			flipperGame.doStep();
 			update++;
 			logger.debug("Update" + update + " ------------------------------ update " + update);
@@ -168,7 +169,7 @@ public class FlipperGameTest {
 
 		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
 
-		System.out.println(observer.toString());
+		System.out.println(flipperGame.getController().observer.toString());
 		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
 
 	}

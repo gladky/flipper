@@ -88,15 +88,12 @@ public class Switch extends FlipperObject {
 	protected void sendData() {
 		Data data = outputQueue.poll();
 
-		for (FlipperObject successor : getSuccessors()) {
-
-			FlipperObject bufuSuccessor = data.getTarget();
-			if (!bufuSuccessor.isBusy() && successor.canAccept()) {
-				logger.info(name + " sending event " + data.getName() + " to " + successor.name);
-				bufuSuccessor.setBusy(true);
-				successor.insert(data);
-				return;
-			}
+		FlipperObject bufuSuccessor = data.getTarget();
+		if (!bufuSuccessor.isBusy() && bufuSuccessor.canAccept()) {
+			logger.info(name + " sending event " + data.getName() + " to " + bufuSuccessor.name);
+			bufuSuccessor.setBusy(true);
+			bufuSuccessor.insert(data);
+			return;
 		}
 	}
 
