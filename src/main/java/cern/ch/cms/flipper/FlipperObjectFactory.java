@@ -26,7 +26,7 @@ public class FlipperObjectFactory {
 
 	private final GameController controller;
 
-	private final int DEFAULT_BUFFER_PROCESSING_STEP = 10;
+	private final int DEFAULT_BUFFER_PROCESSING_STEP = 8;
 	private final int DEFAULT_BUFFER_TIMEOUT_STEP = 25;
 
 	private final int DEFAULT_BUFU_PROCESSING_STEP = 10;

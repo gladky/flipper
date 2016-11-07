@@ -19,9 +19,9 @@ public class FlipperGameTest {
 	private static final int timeout = 100;
 
 	// LZ
-	private static final int stepsToLZMin = 13;
-	private static final int stepsToLZAvg = 15;
-	private static final int stepsToLZMax = 20;
+	private static final int stepsToL1Min = 17;
+	private static final int stepsToL1Avg = 19;
+	private static final int stepsToL1Max = 24;
 
 	// LX
 	private static final int stepsLZToLXMin = 21;
@@ -46,7 +46,7 @@ public class FlipperGameTest {
 		Logger.getLogger(FlipperObject.class).setLevel(Level.DEBUG);
 
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
-		doFlow(flipperGame, stepsToLZAvg, stepsLZToLXAvg, stepsLXToStorage);
+		doFlow(flipperGame, stepsToL1Avg, stepsLZToLXAvg, stepsLXToStorage);
 		Assert.assertEquals("Event in storage", 1, flipperGame.getStorage().queue.size());
 
 	}
@@ -59,7 +59,7 @@ public class FlipperGameTest {
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
 
 		flipperGame.generateNewFragments();
-		flipperGame.doSteps(stepsToLZAvg);
+		flipperGame.doSteps(stepsToL1Avg);
 		flipperGame.pressButtonLevel1();
 		flipperGame.doSteps(stepsLZToLXAvg);
 
@@ -77,12 +77,12 @@ public class FlipperGameTest {
 		Logger.getLogger(Button.class).setLevel(Level.DEBUG);
 		FlipperGame flipperGame = new FlipperGame();
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
-		doFlow(flipperGame, stepsToLZAvg, stepsLZToLXMin, stepsLXToStorage);
+		doFlow(flipperGame, stepsToL1Avg, stepsLZToLXMin, stepsLXToStorage);
 		Assert.assertEquals("Event in storage", 1, flipperGame.getStorage().queue.size());
 
 		FlipperGame flipperGame2 = new FlipperGame();
 		Assert.assertEquals("Nothing in storage", 0, flipperGame2.getStorage().queue.size());
-		doFlow(flipperGame2, stepsToLZAvg, stepsLZToLXMin - 1, stepsLXToStorage);
+		doFlow(flipperGame2, stepsToL1Avg, stepsLZToLXMin - 1, stepsLXToStorage);
 		Assert.assertEquals("Still nothing in storage", 0, flipperGame2.getStorage().queue.size());
 	}
 
@@ -91,12 +91,12 @@ public class FlipperGameTest {
 
 		FlipperGame flipperGame = new FlipperGame();
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
-		doFlow(flipperGame, stepsToLZAvg, stepsLZToLXMax, stepsLXToStorage);
+		doFlow(flipperGame, stepsToL1Avg, stepsLZToLXMax, stepsLXToStorage);
 		Assert.assertEquals("Event in storage", 1, flipperGame.getStorage().queue.size());
 
 		FlipperGame flipperGame2 = new FlipperGame();
 		Assert.assertEquals("Nothing in storage", 0, flipperGame2.getStorage().queue.size());
-		doFlow(flipperGame2, stepsToLZAvg, stepsLZToLXMax + 1, stepsLXToStorage);
+		doFlow(flipperGame2, stepsToL1Avg, stepsLZToLXMax + 1, stepsLXToStorage);
 		Assert.assertEquals("Still nothing in storage", 0, flipperGame2.getStorage().queue.size());
 	}
 
@@ -111,9 +111,10 @@ public class FlipperGameTest {
 		Logger.getLogger(Button.class).setLevel(Level.OFF);
 		Logger.getLogger(Buffer.class).setLevel(Level.OFF);
 		Logger.getLogger(BUFU.class).setLevel(Level.OFF);
-		Logger.getLogger(FlipperObject.class).setLevel(Level.OFF);
+		//Logger.getLogger(FlipperObject.class).setLevel(Level.TRACE);
+		//Logger.getLogger(IndividualPogressObject.class).setLevel(Level.TRACE);
 		Logger.getLogger(Event.class).setLevel(Level.OFF);
-		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);
+		//Logger.getLogger(FlipperGameTest.class).setLevel(Level.DEBUG);
 		Logger.getLogger(Dispatcher.class).setLevel(Level.OFF);
 		Logger.getLogger(FlowObserver.class).setLevel(Level.OFF);
 
@@ -123,6 +124,7 @@ public class FlipperGameTest {
 
 		int progressStep = flipperGame.link11.progressStep;
 		int cycles = (100 / progressStep);
+		cycles = cycles+1;
 		logger.info("Progress step of link level 1 is: " + progressStep + " will generate events every " + cycles);
 		/* Generate new events while pressing the buttons */
 		int generatedEvents = 0;
@@ -130,7 +132,7 @@ public class FlipperGameTest {
 
 			if (generatedEvents < 12) {
 
-				if (i % cycles == 0) {
+				if (i % cycles*2 == 0) {
 					logger.debug("Generating new event ");
 					generatedEvents++;
 					// 4 steps for link to process data
@@ -195,12 +197,13 @@ public class FlipperGameTest {
 
 		int progressStep = flipperGame.link11.progressStep;
 		int cycles = (100 / progressStep);
+		cycles = cycles*2;
 		logger.info("Progress step of link level 1 is: " + progressStep + " will generate events every " + cycles);
 		/* Generate new events while pressing the buttons */
 		int generatedEvents = 0;
 		for (int i = 0; i < 500; i++) {
 
-			if (generatedEvents < 25) {
+			if (generatedEvents < 23) {
 
 				if (i % cycles == 0) {
 					logger.debug("Generating new event ");
@@ -223,7 +226,7 @@ public class FlipperGameTest {
 			}
 		}
 
-		Assert.assertEquals("Make sure 25 events were generated", 25, generatedEvents);
+		Assert.assertEquals("Make sure 23 events were generated", 23, generatedEvents);
 
 		/* Only press the buttons */
 		for (int i = 0; i < 500; i++) {
@@ -244,7 +247,7 @@ public class FlipperGameTest {
 		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
 
 		System.out.println(flipperGame.getController().observer.toString());
-		Assert.assertEquals("Event in storage", 9, flipperGame.getStorage().queue.size());
+		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
 
 	}
 }

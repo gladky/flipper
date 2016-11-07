@@ -6,7 +6,7 @@ import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
-public abstract class Clickable extends FlipperObject {
+public abstract class Clickable extends IndividualPogressObject {
 
 	private final int timeoutStep;
 	private final Button button;

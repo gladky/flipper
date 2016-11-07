@@ -28,7 +28,7 @@ public abstract class FlipperObject extends NamedObject {
 	 * accept more), false otherwise (optional use)
 	 */
 	private boolean reserved;
-	
+
 	protected final SoundPlayer soundPlayer;
 
 	private static final Logger logger = Logger.getLogger(FlipperObject.class);
@@ -43,6 +43,16 @@ public abstract class FlipperObject extends NamedObject {
 		this.soundPlayer = soundPlayer;
 	}
 
+	protected abstract void performInsert(Data data);
+
+	protected abstract int stepImplementation(Data data);
+
+	public abstract void doStep();
+
+	public abstract int[] getProgress();
+
+	protected abstract void finished();
+
 	/** Get the data */
 	public boolean insert(Data data) {
 		if (!canAccept()) {
@@ -50,59 +60,10 @@ public abstract class FlipperObject extends NamedObject {
 			return false;
 		} else {
 			logger.info(name + " received the data " + data.getName());
-			data.setProgress(0);
-			data.setTimeOutProgress(0);
-			queue.add(data);
+			performInsert(data);
 			reserved = false;
 			return true;
 		}
-	}
-
-	public int stepImplementation(Data current) {
-		int newProgress = current.getProgress() + progressStep;
-		current.setProgress(newProgress);
-		return newProgress;
-	}
-
-	/** Do step of simulation, will increase the progress with step */
-	public void doStep() {
-
-		if (!queue.isEmpty()) {
-			boolean localBackpressure = false;
-
-			Data backpressureCause = null;
-
-			for (int i = 0; i < queue.size(); i++) {
-
-				if (!localBackpressure) {
-					Data current = queue.get(i);
-					logger.trace(name + " will do step, progress before step: " + current.getProgress());
-					int progress = stepImplementation(current);
-					if (progress > 99) {
-
-						finished();
-
-						if (canSend()) {
-							sendData();
-							progress = 0;
-						} else {
-							backpressureCause = current;
-							localBackpressure = true;
-						}
-					}
-
-				} else {
-					logger.debug("Local backpressure, waiting for finished data " + backpressureCause.getName()
-							+ " to be released");
-				}
-			}
-		}
-	}
-
-	protected void finished() {
-		Data data = queue.peek();
-		logger.debug(name + " finished with " + data + " my progress is now " + data.getProgress());
-		return;
 	}
 
 	/** Can accept more data */
@@ -172,12 +133,6 @@ public abstract class FlipperObject extends NamedObject {
 		for (FlipperObject successor : successors) {
 			successor.insert(data);
 		}
-	}
-
-	/** Indicator of simulation progress in this object, values: 0-99 */
-	public int[] getProgress() {
-
-		return queue.getProgress();
 	}
 
 	public List<FlipperObject> getSuccessors() {
