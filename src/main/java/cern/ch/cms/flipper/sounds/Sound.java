@@ -3,41 +3,63 @@ package cern.ch.cms.flipper.sounds;
 public enum Sound {
 
 	/* Game events */
-	GameStart(12),
-	GameOver(13),
+	GameStart(1, "GS"),
+	GameOver(2, "GO"),
 
 	/* Resource events */
-	EmptyProtonBottle(9),
-	FullStorage(10),
-	Backpressure(11),
+	EmptyProtonBottle(10, "PBE"),
+	FullStorage(11, "SF"),
+	Backpressure(12, "BP"),
+	BackpressureOver(13, "BPO"),
 
 	/* Accepted events */
-	AcceptedInterestingFragments(0),
-	AcceptedInterestingEvent(2),
-	AcceptedNonInterestingFragments(1),
-	AcceptedNotInteresingEvent(3),
+	AcceptedInterestingFragments(20, "FAI"),
+	AcceptedInterestingEvent(21, "EAI"),
+	AcceptedNonInterestingFragments(22, "FAN"),
+	AcceptedNotInteresingEvent(23, "EAN"),
 
 	/* Missed events */
-	MissedInterestedEvent(5),
-	MissedInterestingFragments(7),
-	MissedNotInterestingFragments(4),
-	MissedNotInterestingEvent(6),
-	
+	MissedInterestedEvent(31, "EMI"),
+	MissedInterestingFragments(32, "FMI"),
+	MissedNotInterestingFragments(33, "FMN"),
+	MissedNotInterestingEvent(34, "EMN"),
+
 	/* Other */
-	ButtonPressedWhenDisabled(8);
-	
-	
-	
-	
+	ButtonPressedWhenDisabled(40, "BPD");
 
 	private final int id;
 
-	private Sound(int id) {
+	/**
+	 * This is for better debuggin only, can be ommited in production
+	 */
+	private final String code;
+
+	private Sound(int id, String code) {
 		this.id = id;
+		this.code = code;
 	}
 
 	public int getId() {
 		return this.id;
+	}
+
+	/**
+	 * For better debugging only, can be ommitted in production
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Sound getById(int id) {
+		for (Sound sound : Sound.values()) {
+			if (sound.getId() == id) {
+				return sound;
+			}
+		}
+		return null;
+	}
+
+	public String getCode() {
+		return code;
 	}
 
 }

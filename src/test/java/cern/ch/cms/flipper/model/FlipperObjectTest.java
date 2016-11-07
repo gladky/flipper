@@ -16,34 +16,47 @@ public class FlipperObjectTest {
 		FlipperObject link = new Link("test-link", 1, 25, new SoundPlayer("sp"));
 		FlipperObject storage = new Storage("[storage]", 10, new SoundPlayer("sp"));
 		link.getSuccessors().add(storage);
+		FlipperObject[] objects = { storage, link };
 
 		Data f1 = new Fragment();
+		Assert.assertEquals(1, link.getProgress().length);
+		Assert.assertEquals(true, link.canAccept());
+		Assert.assertEquals(0, link.getProgress()[0]);
 		link.insert(f1);
 		Assert.assertEquals(false, link.canAccept());
 		Assert.assertEquals(1, link.getProgress().length);
 		Assert.assertEquals(0, link.getProgress()[0]);
 
-		link.doStep();
+		doSteps(objects);
 		Assert.assertEquals(1, link.getProgress().length);
 		Assert.assertEquals(25, link.getProgress()[0]);
 		Assert.assertEquals(false, link.canAccept());
 
-		link.doStep();
+		doSteps(objects);
 		Assert.assertEquals(1, link.getProgress().length);
 		Assert.assertEquals(50, link.getProgress()[0]);
 		Assert.assertEquals(false, link.canAccept());
 
-		link.doStep();
+		doSteps(objects);
 		Assert.assertEquals(1, link.getProgress().length);
 		Assert.assertEquals(75, link.getProgress()[0]);
+		Assert.assertEquals(1, storage.getProgress().length);
+		Assert.assertEquals(0, storage.getProgress()[0]);
 		Assert.assertEquals(false, link.canAccept());
 
-		link.doStep();
+		doSteps(objects);
+		Assert.assertEquals(1, link.getProgress().length);
+		Assert.assertEquals(0, link.getProgress()[0]);
+		Assert.assertEquals(1, storage.getProgress().length);
+		Assert.assertEquals(10, storage.getProgress()[0]);
+		Assert.assertEquals(true, link.canAccept());
+
+		doSteps(objects);
+		doSteps(objects);
+
 		Assert.assertEquals(1, link.getProgress().length);
 		Assert.assertEquals(0, link.getProgress()[0]);
 		Assert.assertEquals(true, link.canAccept());
-
-		link.doStep();
 	}
 
 	@Test
@@ -67,8 +80,8 @@ public class FlipperObjectTest {
 	@Test
 	public void linksDontWorkAsBuffers() {
 		Button button = new Button("[test-button]");
-		FlipperObject link = new Link("[test-link]", 1, 25,new SoundPlayer("sp"));
-		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button,new SoundPlayer("sp"));
+		FlipperObject link = new Link("[test-link]", 1, 25, new SoundPlayer("sp"));
+		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button, new SoundPlayer("sp"));
 		link.getSuccessors().add(bufu);
 
 		FlipperObject[] objects = { bufu, link };
@@ -115,6 +128,7 @@ public class FlipperObjectTest {
 		doSteps(objects);
 		Assert.assertEquals("link is done already", 0, link.getProgress()[0]);
 		Assert.assertEquals("bufu done here, but needs to release", 100, bufu.getProgress()[0]);
+
 		Assert.assertEquals("link will still NOT accept, bufu needs to release", false, link.canAccept());
 
 		button.press();

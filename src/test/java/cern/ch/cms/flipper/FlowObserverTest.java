@@ -12,7 +12,7 @@ public class FlowObserverTest {
 
 		FlipperGame flipperGame = new FlipperGame();
 
-		FlowObserver observer = new FlowObserver(flipperGame);
+		FlowObserver observer = new DataObserver(flipperGame);
 
 		logger.info(observer.fixedLengthString("abc", 3));
 		logger.info(observer.fixedLengthString("a", 3));

@@ -13,7 +13,7 @@ import cern.ch.cms.flipper.event.Data;
  */
 public class SimpleFifoQueue {
 
-	private List<Data> queue;
+	public List<Data> queue;
 	private int tailIndex;
 
 	private int capacity;

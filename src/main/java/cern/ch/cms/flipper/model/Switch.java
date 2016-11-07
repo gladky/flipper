@@ -7,7 +7,7 @@ import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.event.Event;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
-public class Switch extends FlipperObject {
+public class Switch extends SinglePogressObject {
 
 	/** Data currently in this object */
 	protected final SimpleFifoQueue outputQueue;

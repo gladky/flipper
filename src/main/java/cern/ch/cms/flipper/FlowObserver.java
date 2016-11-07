@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
+import cern.ch.cms.flipper.model.BUFU;
 import cern.ch.cms.flipper.model.Buffer;
 import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
@@ -18,16 +19,18 @@ import cern.ch.cms.flipper.model.Link;
 import cern.ch.cms.flipper.model.NamedObject;
 import cern.ch.cms.flipper.model.Storage;
 import cern.ch.cms.flipper.model.Switch;
+import cern.ch.cms.flipper.sounds.Sound;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
-public class FlowObserver {
+public abstract class FlowObserver {
 
-	private static final int MIN = 2;
-	private static final int WIDTH = 4;
-	private static final int SWITCH_WIDTH = 5;
-	private static final int STORAGE_WIDTH = 14;
-	private static final int SOUND_WIDTH = 5;
-	private static final String empty = "";
+	private final int MIN_WIDTH;
+	private final int WIDTH;
+	private final int SWITCH_WIDTH;
+	private final int STORAGE_WIDTH;
+	private final int SOUND_WIDTH;
+	private final int BUFFER_WIDTH;
+	protected static final String empty = "";
 
 	private List<NamedObject> observedObjects;
 
@@ -37,7 +40,15 @@ public class FlowObserver {
 
 	private Map<Integer, Integer> lengths;
 
-	public FlowObserver(FlipperGame flipperGame) {
+	public FlowObserver(FlipperGame flipperGame, int minWidth, int width, int switchWidth, int storageWidth, int soundWidth,int bufferWidth)
+	{
+		
+		this.MIN_WIDTH = minWidth;
+		this.WIDTH = width;
+		this.SWITCH_WIDTH = switchWidth;
+		this.STORAGE_WIDTH = storageWidth;
+		this.SOUND_WIDTH = soundWidth;
+		this.BUFFER_WIDTH = bufferWidth;
 		this.states = new ArrayList<Map<String, String>>();
 		this.observedObjects = new ArrayList<NamedObject>();
 
@@ -102,13 +113,15 @@ public class FlowObserver {
 				} else if (object instanceof Switch) {
 					lengths.put(i, SWITCH_WIDTH);
 				} else if (object instanceof Link) {
-					lengths.put(i, MIN);
+					lengths.put(i, MIN_WIDTH);
+				}else if (object instanceof Buffer) {
+					lengths.put(i, BUFFER_WIDTH);
 				} else {
 					lengths.put(i, WIDTH);
 				}
 			} else {
 				if (object instanceof Button) {
-					lengths.put(i, MIN);
+					lengths.put(i, MIN_WIDTH);
 				} else if (object instanceof SoundPlayer) {
 					lengths.put(i, SOUND_WIDTH);
 				} else {
@@ -120,41 +133,43 @@ public class FlowObserver {
 
 	}
 
+	protected abstract String getState(Link link);
+
+	protected abstract String getState(BUFU bufu);
+
+	protected abstract String getState(Buffer buffer);
+
+	protected abstract String getState(Storage storage);
+
+	protected String getState(Switch switch_) {
+		if (switch_.getQueue().queue.size() == 0) {
+			return "";
+		} else {
+			return switch_.getQueue().queue.get(3).getName() + "-" + switch_.getQueue().queue.get(0).getName();
+		}
+
+	}
+
 	private Pair<String, String> getState(FlipperObject observedObject) {
 		logger.debug("Persisting state of object, key: " + observedObject.getName());
 
-		int elements = observedObject.getQueue().size();
-
-		String data = "";
-
-		if (elements == 0) {
-			data = empty;
-		} else if (elements == 1) {
-
-			data = observedObject.getQueue().get(0).getName();
+		String data;
+		if (observedObject instanceof Link) {
+			data = getState((Link) observedObject);
+		} else if (observedObject instanceof Buffer) {
+			data = getState((Buffer) observedObject);
+		} else if (observedObject instanceof BUFU) {
+			data = getState((BUFU) observedObject);
+		} else if (observedObject instanceof Storage) {
+			data = getState((Storage) observedObject);
+		} else if (observedObject instanceof Switch) {
+			data = getState((Switch) observedObject);
 		} else {
-
-			if (observedObject instanceof Buffer) {
-				data = "[" + elements + "]";
-
-			} else if (observedObject instanceof Switch) {
-				Switch switch_ = (Switch) observedObject;
-				data += switch_.getQueue().get(3).getName();
-				data += "-";
-				data += switch_.getQueue().get(0).getName();
-			} else {
-				data = "";
-				for (int e = 0; e < elements; e++) {
-					if (e != 0 && !(observedObject instanceof Storage)) {
-						data += ",";
-					}
-					data += observedObject.getQueue().get(e).getName();
-
-				}
-			}
+			data = "???";
 		}
 
 		return Pair.of(observedObject.getName(), data);
+
 	}
 
 	private Pair<String, String> getState(Button observedButtonObject) {
@@ -197,7 +212,7 @@ public class FlowObserver {
 					if (i != 0) {
 						data += ",";
 					}
-					data += soundPlayer.getSounds().get(i);
+					data += Sound.getById(soundPlayer.getSounds().get(i)).getCode();
 				}
 
 				result = Pair.of(soundPlayer.getName(), data);

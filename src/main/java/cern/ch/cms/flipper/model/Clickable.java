@@ -6,10 +6,9 @@ import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
-public abstract class Clickable extends FlipperObject {
+public abstract class Clickable extends IndividualPogressObject {
 
 	private final int timeoutStep;
-	private int timeoutProgress;
 	private final Button button;
 
 	private boolean accepted;
@@ -48,18 +47,21 @@ public abstract class Clickable extends FlipperObject {
 			}
 			
 			logger.info(name + " accepted the data " + queue.peek().getName() + " in time");
-			this.timeoutProgress = 0;
+			//data.setTimeOutProgress(0);
 			boolean canSend = super.canSend();
 			if (canSend) {
 				
 			}
 			return canSend;
 		} else {
-			this.timeoutProgress += timeoutStep;
+			Data data = this.queue.peek();
+			int timeoutProgress = data.getTimeOutProgress() + timeoutStep;
+			
+			data.setTimeOutProgress(timeoutProgress);
 			if (timeoutProgress > 99) {
 
-				Data data = this.queue.poll();
-				logger.info(name + " data " + data.getName() + " not accepted in given timespan, rejecting");
+				Data dataToReject = this.queue.poll();
+				logger.info(name + " data " + dataToReject.getName() + " not accepted in given timespan, rejecting");
 				button.disable();
 				registerMissedSound(data.isInteresting());
 			}

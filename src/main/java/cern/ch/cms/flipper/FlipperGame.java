@@ -201,7 +201,7 @@ public class FlipperGame {
 		link48.getSuccessors().add(storage);
 
 		/* FIXME: Use this line for debugging, In production remove it */
-		controller.observer = new FlowObserver(this);
+		controller.observer = new StateObserver(this);
 
 		fragmentGenerator = new FragmentGenerator(link11, link12, link13, link14);
 
