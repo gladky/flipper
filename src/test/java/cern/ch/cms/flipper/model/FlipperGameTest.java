@@ -250,4 +250,7 @@ public class FlipperGameTest {
 		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
 
 	}
+	
+	
+	
 }
