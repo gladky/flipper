@@ -20,8 +20,6 @@ import cern.ch.cms.flipper.sounds.SoundPlayer;
  */
 public class FlipperObjectFactory {
 
-	private static int counter = 0;
-
 	private final GameController controller;
 
 	private final int DEFAULT_BUFFER_PROCESSING_STEP = 8;
@@ -92,13 +90,7 @@ public class FlipperObjectFactory {
 		return switch_;
 	}
 
-	@Deprecated
-	private String getUniqueName2(String name) {
-		return "[" + String.format("%02d", counter++) + ": " + name + "]";
-	}
-
 	private String getShortName(String name) {
-		counter++;
 		return name;
 	}
 
