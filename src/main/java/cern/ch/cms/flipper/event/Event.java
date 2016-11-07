@@ -1,12 +1,12 @@
 package cern.ch.cms.flipper.event;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cern.ch.cms.flipper.NameGenerator;
 
 public class Event extends Data {
 
-	private static final Logger logger = Logger.getLogger(Event.class);
+	//private static final Logger logger = Logger.getLogger(Event.class);
 
 	/**
 	 * Main constructor of Event
@@ -30,7 +30,7 @@ public class Event extends Data {
 		// String name = "e" + d.getName();
 		String name = NameGenerator.generateSimpleName(d.getName());
 
-		logger.debug("Generated name is: " + name);
+		//logger.debug("Generated name is: " + name);
 
 		return name;
 	}

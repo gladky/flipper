@@ -1,13 +1,10 @@
 package cern.ch.cms.flipper.model;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public abstract class IndividualPogressObject extends FlipperObject {
 
-	private final static Logger logger = Logger.getLogger(IndividualPogressObject.class);
 
 	/** One event per cycle can be accepted */
 	private boolean acceptedThisCycle;
@@ -29,7 +26,6 @@ public abstract class IndividualPogressObject extends FlipperObject {
 	public boolean canAccept() {
 
 		if (acceptedThisCycle) {
-			logger.info(name + " Cannot accept. Only one event per cycle can be accepted");
 			return false;
 		}
 		return super.canAccept();
@@ -43,7 +39,6 @@ public abstract class IndividualPogressObject extends FlipperObject {
 	@Override
 	public int stepImplementation(Data current) {
 		int newProgress = current.getProgress() + progressStep;
-		logger.trace("Doing step: " + current.getProgress() + " -> " + newProgress);
 		current.setProgress(newProgress);
 		return newProgress;
 	}
@@ -62,11 +57,8 @@ public abstract class IndividualPogressObject extends FlipperObject {
 			for (int i = 0; i < recentSize; i++) {
 
 				Data current = queue.get(i);
-				logger.trace("Processing data " + current.getName());
 
 				if (current.getProgress() + progressStep < localProgressLimit) {
-					logger.trace(name + " will do step, progress before step: " + current.getProgress()
-							+ " current local progress limit: " + localProgressLimit);
 					int progress = stepImplementation(current);
 					if (progress < localProgressLimit) {
 						localProgressLimit = progress;
@@ -77,15 +69,11 @@ public abstract class IndividualPogressObject extends FlipperObject {
 
 						if (canSend()) {
 							sendData();
-							// localProgressLimit = fakeInf;
 						}
 					}
 
 				} else {
 
-					logger.debug("Local data backpressure, " + current.getName() + " cannot progress from "
-							+ current.getProgress() + " waiting for predecessor data with progress" + localProgressLimit
-							+ " to increase");
 					if (current.getProgress() < localProgressLimit) {
 						localProgressLimit = current.getProgress();
 					}
@@ -105,8 +93,6 @@ public abstract class IndividualPogressObject extends FlipperObject {
 	}
 
 	protected void finished() {
-		Data data = queue.peek();
-		logger.debug(name + " finished with " + data + " my progress is now " + data.getProgress());
 		return;
 	}
 }

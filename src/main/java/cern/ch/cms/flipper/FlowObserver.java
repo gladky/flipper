@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.BUFU;
 import cern.ch.cms.flipper.model.Buffer;
@@ -35,8 +32,6 @@ public abstract class FlowObserver {
 	private List<NamedObject> observedObjects;
 
 	private List<Map<String, String>> states;
-
-	private static final Logger logger = Logger.getLogger(FlowObserver.class);
 
 	private Map<Integer, Integer> lengths;
 
@@ -150,8 +145,7 @@ public abstract class FlowObserver {
 
 	}
 
-	private Pair<String, String> getState(FlipperObject observedObject) {
-		logger.debug("Persisting state of object, key: " + observedObject.getName());
+	private Pair getState(FlipperObject observedObject) {
 
 		String data;
 		if (observedObject instanceof Link) {
@@ -172,7 +166,7 @@ public abstract class FlowObserver {
 
 	}
 
-	private Pair<String, String> getState(Button observedButtonObject) {
+	private Pair getState(Button observedButtonObject) {
 
 		String name = observedButtonObject.getName();
 		String enabled = observedButtonObject.isEnabled() ? "E" : " ";
@@ -185,7 +179,7 @@ public abstract class FlowObserver {
 
 		for (NamedObject observedObject : observedObjects) {
 
-			Pair<String, String> result = null;
+			Pair result = null;
 
 			if (observedObject instanceof FlipperObject) {
 				FlipperObject observedFlipperObject = (FlipperObject) observedObject;
@@ -197,7 +191,7 @@ public abstract class FlowObserver {
 				Dispatcher dispatcher = (Dispatcher) observedObject;
 				int target = dispatcher.getResult();
 				String data = "";
-				if(target != -1){
+				if (target != -1) {
 					data += target;
 				}
 				if (dispatcher.isBackpressure()) {
@@ -225,7 +219,6 @@ public abstract class FlowObserver {
 		}
 
 		states.add(currentState);
-		logger.debug("Persisted " + currentState.size() + " objects");
 
 	}
 

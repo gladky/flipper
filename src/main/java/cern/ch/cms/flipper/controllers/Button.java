@@ -1,14 +1,11 @@
 package cern.ch.cms.flipper.controllers;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.model.NamedObject;
 import cern.ch.cms.flipper.sounds.Sound;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class Button extends NamedObject {
 
-	private static final Logger logger = Logger.getLogger(Button.class);
 
 	/** Only when enabled pressing will be accepted */
 	private boolean enabled;
@@ -29,22 +26,17 @@ public class Button extends NamedObject {
 	}
 
 	public void enable() {
-		logger.debug(name + " Button enabled");
 		enabled = true;
 		pressed = false;
 		disableRequest = false;
 	}
 
 	public boolean press() {
-		logger.trace(name + " Button pressed");
 		if (enabled) {
-			logger.debug(name + " Button pressed when enabled");
 			pressed = true;
-			//isableRequest = false;
 			soundPlayer.register(Sound.ButtonPressedWhenEnabled);
 			return true;
 		} else {
-			logger.debug(name + " Ignoring button pressed");
 			soundPlayer.register(Sound.ButtonPressedWhenDisabled);
 			return false;
 		}
@@ -55,7 +47,6 @@ public class Button extends NamedObject {
 	}
 
 	public void disable() {
-		logger.debug(name + " Button disable requested");
 		disableRequest = true;
 	}
 
@@ -65,7 +56,6 @@ public class Button extends NamedObject {
 
 	public void doStep() {
 		if (disableRequest) {
-			logger.debug("Button disabled");
 			enabled = false;
 			pressed = false;
 			disableRequest = false;

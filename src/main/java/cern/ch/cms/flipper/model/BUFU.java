@@ -1,15 +1,11 @@
 package cern.ch.cms.flipper.model;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.Sound;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class BUFU extends Clickable {
-
-	private Logger logger = Logger.getLogger(BUFU.class);
 
 	public BUFU(String name, int progressStep, int timeoutStep, Button button, SoundPlayer soundPlayer) {
 		// capacity is always 1 as bufu may process one event
@@ -30,10 +26,8 @@ public class BUFU extends Clickable {
 		}
 
 		if (basicCheck && allLinksFree) {
-			logger.info(name + " Can send");
 			return true;
 		} else {
-			logger.info(name + " Cannot send, all links free? " + allLinksFree);
 			return false;
 		}
 
@@ -41,7 +35,6 @@ public class BUFU extends Clickable {
 
 	@Override
 	protected void sendData() {
-		logger.info(name + " reserving links");
 
 		for (FlipperObject successor : getSuccessors()) {
 			reserveLinks(successor);

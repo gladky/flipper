@@ -1,7 +1,5 @@
 package cern.ch.cms.flipper.model;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.Sound;
@@ -10,8 +8,6 @@ import cern.ch.cms.flipper.sounds.SoundPlayer;
 public class Buffer extends Clickable {
 
 	private boolean soundMasked;
-
-	private static Logger logger = Logger.getLogger(Buffer.class);
 
 	private Dispatcher dispatcher;
 
@@ -32,13 +28,9 @@ public class Buffer extends Clickable {
 	protected void dispatch() {
 
 		if (!queue.peek().isDispatched()) {
-			logger.trace(name + " Dispatching");
 			int choosenIndex = dispatcher.findAvailableTarget();
 
-
 			if (!dispatcher.isBackpressure()) {
-				FlipperObject next = dispatcher.getLink(choosenIndex);
-				logger.debug(name + " Found available BUFU via " + next.name);
 				queue.peek().setDispatched(true);
 				queue.peek().setTargetIndex(choosenIndex);
 			}

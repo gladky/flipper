@@ -2,8 +2,6 @@ package cern.ch.cms.flipper;
 
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.model.Buffer;
 import cern.ch.cms.flipper.model.Dispatcher;
@@ -11,8 +9,6 @@ import cern.ch.cms.flipper.model.FlipperObject;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlipperGame {
-
-	private static final Logger logger = Logger.getLogger(FlipperGame.class);
 
 	private final GameController controller;
 	private final FlipperObjectFactory factory;
@@ -212,37 +208,30 @@ public class FlipperGame {
 	}
 
 	public void pressButtonLevel1() {
-		logger.debug("Level 1 button pressed");
 		buttonL1.press();
 	}
 
 	public void pressButtonHLT_L1() {
-		logger.debug("Button L1 pressed");
 		buttonHLT_L1.press();
 	}
 
 	public void pressButtonHLT_L2() {
-		logger.debug("Button L2 pressed");
 		buttonHLT_L2.press();
 	}
 
 	public void pressButtonHLT_L3() {
-		logger.debug("Button L3 pressed");
 		buttonHLT_L3.press();
 	}
 
 	public void pressButtonHLT_R1() {
-		logger.debug("Button R1 pressed");
 		buttonHLT_R1.press();
 	}
 
 	public void pressButtonHLT_R2() {
-		logger.debug("Button R2 pressed");
 		buttonHLT_R2.press();
 	}
 
 	public void pressButtonHLT_R3() {
-		logger.debug("Button R3 pressed");
 		buttonHLT_R3.press();
 	}
 

@@ -1,13 +1,9 @@
 package cern.ch.cms.flipper.model;
 
-import org.apache.log4j.Logger;
-
 import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public abstract class SinglePogressObject extends FlipperObject {
-
-	private final static Logger logger = Logger.getLogger(SinglePogressObject.class);
 
 	private int progress;
 
@@ -41,7 +37,6 @@ public abstract class SinglePogressObject extends FlipperObject {
 	public boolean canAccept() {
 
 		if (queue.size() == capacity) {
-			logger.debug(name + " sorry, I cannot accept, I'm full");
 			return false;
 		} else {
 			return true;
