@@ -206,7 +206,7 @@ public abstract class FlowObserver {
 					if (i != 0) {
 						data += ",";
 					}
-					data += Sound.getById(soundPlayer.getSounds().get(i)).getCode();
+					data += Sound.getById(soundPlayer.getSounds().get(i)).getId();
 				}
 
 				result = Pair.of(soundPlayer.getName(), data);

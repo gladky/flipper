@@ -3,45 +3,39 @@ package cern.ch.cms.flipper.sounds;
 public enum Sound {
 
 	/* Game events */
-	GameStart(1, "GS"),
-	GameOver(2, "GO"),
+	GameStart(1),
+	GameOver(2),
 
 	/* Resource events */
-	EmptyProtonBottle(10, "PBE"),
-	FullStorage(11, "SF"),
-	Backpressure(12, "BP"),
-	BackpressureOver(13, "BPO"),
+	EmptyProtonBottle(10),
+	FullStorage(11),
+	Backpressure(12),
+	BackpressureOver(13),
 
 	/* Accepted events */
-	AcceptedInterestingFragments(20, "FAI"),
-	AcceptedInterestingEvent(21, "EAI"),
-	AcceptedNonInterestingFragments(22, "FAN"),
-	AcceptedNotInteresingEvent(23, "EAN"),
+	AcceptedInterestingFragments(20),
+	AcceptedInterestingEvent(21),
+	AcceptedNonInterestingFragments(22),
+	AcceptedNotInteresingEvent(23),
 
 	/* Missed events */
-	MissedInterestedEvent(31, "EMI"),
-	MissedInterestingFragments(32, "FMI"),
-	MissedNotInterestingFragments(33, "FMN"),
-	MissedNotInterestingEvent(34, "EMN"),
+	MissedInterestedEvent(31),
+	MissedInterestingFragments(32),
+	MissedNotInterestingFragments(33),
+	MissedNotInterestingEvent(34),
 
 	/* Storage */
-	ArrivedInterestingToStorage(40, "SI"),
-	ArrivedNotInterestingToStorage(41, "SN"),
+	ArrivedInterestingToStorage(40),
+	ArrivedNotInterestingToStorage(41),
 
 	/* Button pressed */
-	ButtonPressedWhenDisabled(50, "BPD"),
-	ButtonPressedWhenEnabled(51, "BPE");
+	ButtonPressedWhenDisabled(50),
+	ButtonPressedWhenEnabled(51);
 
 	private final int id;
 
-	/**
-	 * This is for better debuggin only, can be ommited in production
-	 */
-	private final String code;
-
-	private Sound(int id, String code) {
+	private Sound(int id) {
 		this.id = id;
-		this.code = code;
 	}
 
 	public int getId() {
@@ -61,10 +55,6 @@ public enum Sound {
 			}
 		}
 		return null;
-	}
-
-	public String getCode() {
-		return code;
 	}
 
 }
