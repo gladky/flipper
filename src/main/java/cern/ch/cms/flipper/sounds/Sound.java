@@ -24,8 +24,13 @@ public enum Sound {
 	MissedNotInterestingFragments(33, "FMN"),
 	MissedNotInterestingEvent(34, "EMN"),
 
-	/* Other */
-	ButtonPressedWhenDisabled(40, "BPD");
+	/* Storage */
+	ArrivedInterestingToStorage(40, "SI"),
+	ArrivedNotInterestingToStorage(41, "SN"),
+
+	/* Button pressed */
+	ButtonPressedWhenDisabled(50, "BPD"),
+	ButtonPressedWhenEnabled(51, "BPE");
 
 	private final int id;
 

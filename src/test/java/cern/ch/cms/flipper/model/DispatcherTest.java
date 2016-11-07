@@ -9,6 +9,7 @@ import cern.ch.cms.flipper.controllers.Button;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class DispatcherTest {
+	private static final SoundPlayer sp = new SoundPlayer("sp");
 
 	/**
 	 * <pre>
@@ -23,18 +24,17 @@ public class DispatcherTest {
 	@Test
 	public void test() {
 
-		FlipperObject link1 = new Link("[link-left]", 1, 25, new SoundPlayer("sp"));
-		FlipperObject link2 = new Link("[link-left]", 1, 25, new SoundPlayer("sp"));
+		FlipperObject link1 = new Link("[link-left]", 1, 25, sp);
+		FlipperObject link2 = new Link("[link-left]", 1, 25, sp);
 
-		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
-		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
+		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1", sp), sp);
+		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1", sp), sp);
 
 		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2),
 				new SoundPlayer("sp"));
 
 		Assert.assertEquals("Should find first link", 0, dispatcher.findAvailableTarget());
 		Assert.assertEquals("Should return last result", 0, dispatcher.findAvailableTarget());
-		
 
 		dispatcher.getTarget(dispatcher.findAvailableTarget()).setBusy(true);
 		dispatcher.invalidate();
@@ -53,11 +53,11 @@ public class DispatcherTest {
 	@Test
 	public void backpressure() {
 
-		FlipperObject link1 = new Link("[link-left]", 1, 25, new SoundPlayer("sp"));
-		FlipperObject link2 = new Link("[link-left]", 1, 25, new SoundPlayer("sp"));
+		FlipperObject link1 = new Link("[link-left]", 1, 25, sp);
+		FlipperObject link2 = new Link("[link-left]", 1, 25, sp);
 
-		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
-		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
+		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1", sp), sp);
+		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1", sp), sp);
 
 		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2),
 				new SoundPlayer("sp"));

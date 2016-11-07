@@ -1,6 +1,5 @@
 package cern.ch.cms.flipper.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,6 +17,8 @@ public class BufferTest extends FlipperObjectTestBase {
 
 	private static final Logger logger = Logger.getLogger(BufferTest.class);
 
+	private static final SoundPlayer sp = new SoundPlayer("sp");
+
 	/**
 	 * Check that buffer will not accept more events than capacity
 	 */
@@ -25,8 +26,7 @@ public class BufferTest extends FlipperObjectTestBase {
 	public void capacityTest() {
 
 		int capacity = 12;
-		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, new Button("test-button"), new SoundPlayer("sp"),
-				true);
+		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, new Button("test-button", sp), sp, true);
 		buffer.setDispatcher(new DispatcherStub());
 
 		for (int i = 0; i < capacity; i++) {
@@ -59,7 +59,7 @@ public class BufferTest extends FlipperObjectTestBase {
 		FlipperObject[] objects;
 		Button[] buttons;
 		int capacity = 10;
-		Button button = new Button("test-button");
+		Button button = new Button("test-button", sp);
 		buttons = new Button[] { button };
 		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, button, new SoundPlayer("sp"), true);
 		FlipperObject storage = new Storage("storage", 10, new SoundPlayer("sp"));
@@ -104,7 +104,7 @@ public class BufferTest extends FlipperObjectTestBase {
 		FlipperObject[] objects;
 		Button[] buttons;
 		int capacity = 10;
-		Button button = new Button("test-button");
+		Button button = new Button("test-button", sp);
 		buttons = new Button[] { button };
 		Buffer buffer = new Buffer("test-buffer", capacity, 10, 30, button, new SoundPlayer("sp"), true);
 		FlipperObject storage = new Storage("storage", 10, new SoundPlayer("sp"));
@@ -175,8 +175,7 @@ public class BufferTest extends FlipperObjectTestBase {
 
 		doSteps(objects, buttons, dispatcher);
 		Assert.assertArrayEquals(new int[] { 120, 90, 80, 70, 60, 50, 40, 30, 20 }, buffer.getProgress());
-		
-		
+
 	}
 
 }

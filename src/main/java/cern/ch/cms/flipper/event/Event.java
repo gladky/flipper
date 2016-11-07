@@ -26,11 +26,10 @@ public class Event extends Data {
 	}
 
 	private static String generateSimpleName(Data d) {
-		// FIXME: for the production do NOT use NameGenerator (its for debugging
-		// only)
-		// String name = "e" + i;
+		// FIXME: for the prod. do NOT use NameGenerator (its for debugging)
+		// String name = "e" + d.getName();
 		String name = NameGenerator.generateSimpleName(d.getName());
-		
+
 		logger.debug("Generated name is: " + name);
 
 		return name;

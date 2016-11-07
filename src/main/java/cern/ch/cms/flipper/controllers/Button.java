@@ -3,6 +3,8 @@ package cern.ch.cms.flipper.controllers;
 import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.model.NamedObject;
+import cern.ch.cms.flipper.sounds.Sound;
+import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class Button extends NamedObject {
 
@@ -16,11 +18,14 @@ public class Button extends NamedObject {
 
 	private boolean disableRequest;
 
-	public Button(String name) {
+	private final SoundPlayer soundPlayer;
+	
+	public Button(String name, SoundPlayer soundPlayer) {
 		super(name);
 		this.enabled = false;
 		this.pressed = false;
 		this.disableRequest = false;
+		this.soundPlayer = soundPlayer;
 	}
 
 	public void enable() {
@@ -36,9 +41,11 @@ public class Button extends NamedObject {
 			logger.debug(name + " Button pressed when enabled");
 			pressed = true;
 			//isableRequest = false;
+			soundPlayer.register(Sound.ButtonPressedWhenEnabled);
 			return true;
 		} else {
 			logger.debug(name + " Ignoring button pressed");
+			soundPlayer.register(Sound.ButtonPressedWhenDisabled);
 			return false;
 		}
 	}

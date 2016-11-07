@@ -133,7 +133,7 @@ public class FlipperObjectFactory {
 
 	public Button createButton(String name) {
 		String uniqueName = getShortName(name);
-		Button button = new Button(uniqueName);
+		Button button = new Button(uniqueName, soundPlayer);
 		controller.getButtons().add(button);
 		return button;
 	}
