@@ -115,6 +115,7 @@ public class FlipperObjectTest {
 		doSteps(objects);
 		Assert.assertEquals("link is done already", 0, link.getProgress()[0]);
 		Assert.assertEquals("bufu done here, but needs to release", 100, bufu.getProgress()[0]);
+		
 		Assert.assertEquals("link will still NOT accept, bufu needs to release", false, link.canAccept());
 
 		button.press();

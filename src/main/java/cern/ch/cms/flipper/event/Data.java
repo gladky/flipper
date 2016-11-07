@@ -5,6 +5,8 @@ import cern.ch.cms.flipper.model.FlipperObject;
 public abstract class Data {
 
 	private int progress;
+	
+	private int timeOutProgress;
 
 	private boolean dispatched;
 
@@ -69,6 +71,14 @@ public abstract class Data {
 
 	public boolean isFragment() {
 		return isFragment;
+	}
+
+	public int getTimeOutProgress() {
+		return timeOutProgress;
+	}
+
+	public void setTimeOutProgress(int timeOutProgress) {
+		this.timeOutProgress = timeOutProgress;
 	}
 
 }

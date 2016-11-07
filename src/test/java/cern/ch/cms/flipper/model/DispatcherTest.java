@@ -29,7 +29,7 @@ public class DispatcherTest {
 		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
 		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
 
-		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2));
+		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2), new SoundPlayer("sp"));
 
 		Assert.assertEquals("Should find first link", link1, dispatcher.findAvailableTarget());
 		Assert.assertEquals("Should return last result", link1, dispatcher.findAvailableTarget());
@@ -56,7 +56,7 @@ public class DispatcherTest {
 		FlipperObject bufu1 = new BUFU("[test-bufu-1]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
 		FlipperObject bufu2 = new BUFU("[test-bufu-2]", 5, 25, new Button("b1"), new SoundPlayer("sp"));
 
-		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2));
+		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link1, link2), new SoundPlayer("sp"));
 
 		Assert.assertEquals("Should find first link", link1, dispatcher.findAvailableTarget());
 		Assert.assertEquals("Should return last result", link1, dispatcher.findAvailableTarget());

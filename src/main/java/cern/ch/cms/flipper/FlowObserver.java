@@ -18,6 +18,7 @@ import cern.ch.cms.flipper.model.Link;
 import cern.ch.cms.flipper.model.NamedObject;
 import cern.ch.cms.flipper.model.Storage;
 import cern.ch.cms.flipper.model.Switch;
+import cern.ch.cms.flipper.sounds.Sound;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlowObserver {
@@ -26,7 +27,7 @@ public class FlowObserver {
 	private static final int WIDTH = 4;
 	private static final int SWITCH_WIDTH = 5;
 	private static final int STORAGE_WIDTH = 14;
-	private static final int SOUND_WIDTH = 5;
+	private static final int SOUND_WIDTH = 7;
 	private static final String empty = "";
 
 	private List<NamedObject> observedObjects;
@@ -197,7 +198,7 @@ public class FlowObserver {
 					if (i != 0) {
 						data += ",";
 					}
-					data += soundPlayer.getSounds().get(i);
+					data += Sound.getById(soundPlayer.getSounds().get(i)).getCode();
 				}
 
 				result = Pair.of(soundPlayer.getName(), data);

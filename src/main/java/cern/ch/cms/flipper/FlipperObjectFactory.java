@@ -126,7 +126,7 @@ public class FlipperObjectFactory {
 	}
 
 	public Dispatcher createDispatcher(List<FlipperObject> bufus, List<FlipperObject> links) {
-		Dispatcher dispatcher = new Dispatcher(bufus, links);
+		Dispatcher dispatcher = new Dispatcher(bufus, links, soundPlayer);
 		controller.setDispatcher(dispatcher);
 		return dispatcher;
 	}

@@ -51,6 +51,7 @@ public abstract class FlipperObject extends NamedObject {
 		} else {
 			logger.info(name + " received the data " + data.getName());
 			data.setProgress(0);
+			data.setTimeOutProgress(0);
 			queue.add(data);
 			reserved = false;
 			return true;

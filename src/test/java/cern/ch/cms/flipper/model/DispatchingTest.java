@@ -97,7 +97,7 @@ public class DispatchingTest {
 		link5.getSuccessors().add(bufu1);
 		link6.getSuccessors().add(bufu2);
 
-		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link5, link6));
+		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link5, link6), new SoundPlayer("sp"));
 		buffer1.setDispatcher(dispatcher);
 		buffer2.setDispatcher(dispatcher);
 		buffer3.setDispatcher(dispatcher);

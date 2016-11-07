@@ -57,7 +57,7 @@ public class BufferTest extends FlipperObjectTestBase {
 		buttons = new Button[] { button };
 		Buffer buffer = new Buffer("test-buffer", capacity, 10, 10, button, new SoundPlayer("sp"),true);
 		FlipperObject storage = new Storage("storage", 10, new SoundPlayer("sp"));
-		Dispatcher dispatcher = new Dispatcher(Arrays.asList(storage), Arrays.asList(storage));
+		Dispatcher dispatcher = new Dispatcher(Arrays.asList(storage), Arrays.asList(storage), new SoundPlayer("sp"));
 		objects = new FlipperObject[] { storage, buffer };
 
 		buffer.setDispatcher(dispatcher);

@@ -187,6 +187,8 @@ public class FlipperGameTest {
 		Logger.getLogger(Clickable.class).setLevel(Level.OFF);
 		Logger.getLogger(Button.class).setLevel(Level.OFF);
 		Logger.getLogger(FlipperGameTest.class).setLevel(Level.OFF);
+		Logger.getLogger(Buffer.class).setLevel(Level.OFF);
+		Logger.getLogger(Dispatcher.class).setLevel(Level.OFF);
 
 		int update = 0;
 		Assert.assertEquals("Nothing in storage", 0, flipperGame.getStorage().queue.size());
@@ -198,7 +200,7 @@ public class FlipperGameTest {
 		int generatedEvents = 0;
 		for (int i = 0; i < 500; i++) {
 
-			if (generatedEvents < 24) {
+			if (generatedEvents < 25) {
 
 				if (i % cycles == 0) {
 					logger.debug("Generating new event ");
@@ -221,7 +223,7 @@ public class FlipperGameTest {
 			}
 		}
 
-		Assert.assertEquals("Make sure 24 events were generated", 24, generatedEvents);
+		Assert.assertEquals("Make sure 25 events were generated", 25, generatedEvents);
 
 		/* Only press the buttons */
 		for (int i = 0; i < 500; i++) {
@@ -242,7 +244,7 @@ public class FlipperGameTest {
 		logger.info("Accepted events: " + flipperGame.getStorage().queue.toString());
 
 		System.out.println(flipperGame.getController().observer.toString());
-		Assert.assertEquals("Event in storage", 12, flipperGame.getStorage().queue.size());
+		Assert.assertEquals("Event in storage", 9, flipperGame.getStorage().queue.size());
 
 	}
 }
