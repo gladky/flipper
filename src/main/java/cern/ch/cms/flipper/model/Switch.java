@@ -49,7 +49,7 @@ public class Switch extends SinglePogressObject {
 			outputQueue.add(event);
 			queue.clear();
 			logger.debug(
-					name + " Built new event: " + event.getName() + " with the target " + event.getTarget().getName());
+					name + " Built new event: " + event.getName() + " with the target " + event.getTarget());
 
 			return 100;
 		} else if (queue.size() == 3) {
@@ -68,20 +68,7 @@ public class Switch extends SinglePogressObject {
 	protected boolean canSend() {
 
 		logger.debug(name + " looking for bufu successor");
-		boolean atLeastOneAccept = false;
-
-		FlipperObject successorToAvailableBufu = outputQueue.peek().getTarget();
-		logger.debug(name + " Dispatched to Bufu successor " + successorToAvailableBufu.name
-				+ ", will now verify if not busy");
-		if (!successorToAvailableBufu.isBusy()) {
-			atLeastOneAccept = true;
-			logger.debug(name + " can send event, available bufu successor: " + successorToAvailableBufu.name);
-		}
-
-		if (!atLeastOneAccept) {
-			logger.info("There is no BUFU avaialble right now");
-		}
-		return atLeastOneAccept;
+		return true;
 
 	}
 
@@ -90,7 +77,7 @@ public class Switch extends SinglePogressObject {
 		Data data = outputQueue.poll();
 
 		FlipperObject bufuSuccessor = data.getTarget();
-		if (!bufuSuccessor.isBusy() && bufuSuccessor.canAccept()) {
+		if ( bufuSuccessor.canAccept()) {
 			logger.info(name + " sending event " + data.getName() + " to " + bufuSuccessor.name);
 			bufuSuccessor.setBusy(true);
 			bufuSuccessor.insert(data);

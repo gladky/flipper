@@ -2,6 +2,7 @@ package cern.ch.cms.flipper.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -12,15 +13,15 @@ public class Dispatcher extends NamedObject {
 
 	private List<FlipperObject> linksToTarget;
 	private List<FlipperObject> targets;
-	private FlipperObject result;
+	private int result;
 	private boolean valid;
 	private boolean backpressure;
-	
+
 	private final SoundPlayer soundPlayer;
 
 	private static Logger logger = Logger.getLogger(Dispatcher.class);
 
-	public Dispatcher(List<FlipperObject> targets, List<FlipperObject> linksToTargets,SoundPlayer soundPlayer) {
+	public Dispatcher(List<FlipperObject> targets, List<FlipperObject> linksToTargets, SoundPlayer soundPlayer) {
 		super("Dispatcher");
 		this.targets = targets;
 		this.linksToTarget = linksToTargets;
@@ -29,14 +30,24 @@ public class Dispatcher extends NamedObject {
 		this.valid = false;
 		this.backpressure = false;
 		this.soundPlayer = soundPlayer;
+
 	}
 
-	public FlipperObject findAvailableTarget() {
+	public FlipperObject getTarget(int id) {
+		return targets.get(id);
+	}
+
+	public FlipperObject getLink(int id) {
+		return linksToTarget.get(id);
+	}
+
+	public int findAvailableTarget() {
 
 		if (valid) {
-			logger.debug("Returning valid result without recalculation " + result.name);
+			logger.debug("Returning valid result without recalculation " + targets.get(result));
 		} else {
-			//backpressure = false;
+			result = -1;
+			// backpressure = false;
 			logger.debug("Recalculating path to avaialble target");
 			List<Integer> ready = new ArrayList<Integer>();
 
@@ -57,24 +68,23 @@ public class Dispatcher extends NamedObject {
 			logger.info("BUFUs ready: " + ready);
 
 			if (ready.size() > 0) {
-				if(backpressure == true){
+				if (backpressure == true) {
 					soundPlayer.register(Sound.BackpressureOver);
 				}
 				backpressure = false;
-				
-				//TODO: randomly 
+
+				// TODO: randomly
+				int choosenRandom = ready.get((new Random()).nextInt(ready.size()));
 				int choosen = ready.get(0);
 
-				targets.get(choosen).setBusy(true);
-				result = linksToTarget.get(choosen);
-				logger.info("Randomly choosing BUFU: " + choosen + " via link " + result.getName());
-				
+				result = choosen;
+				logger.info("Randomly choosing BUFU: " + choosen + " via link " + linksToTarget.get(choosen).getName());
 
 				valid = true;
-				logger.info("Recalculated path to avaialble target, result " + result.getName());
+				logger.info("Recalculated path to avaialble target, result " + linksToTarget.get(choosen).getName());
 			} else {
-				
-				if(backpressure == false){
+
+				if (backpressure == false) {
 					soundPlayer.register(Sound.Backpressure);
 				}
 				backpressure = true;
@@ -86,7 +96,7 @@ public class Dispatcher extends NamedObject {
 	}
 
 	public void invalidate() {
-		result = null;
+		result = -1;
 		valid = false;
 	}
 
@@ -94,7 +104,7 @@ public class Dispatcher extends NamedObject {
 		return backpressure;
 	}
 
-	public FlipperObject getResult() {
+	public int getResult() {
 		return result;
 	}
 

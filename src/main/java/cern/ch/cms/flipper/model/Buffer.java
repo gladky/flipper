@@ -3,6 +3,7 @@ package cern.ch.cms.flipper.model;
 import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
+import cern.ch.cms.flipper.event.Data;
 import cern.ch.cms.flipper.sounds.Sound;
 import cern.ch.cms.flipper.sounds.SoundPlayer;
 
@@ -32,12 +33,14 @@ public class Buffer extends Clickable {
 
 		if (!queue.peek().isDispatched()) {
 			logger.trace(name + " Dispatching");
-			FlipperObject next = dispatcher.findAvailableTarget();
+			int choosenIndex = dispatcher.findAvailableTarget();
+
 
 			if (!dispatcher.isBackpressure()) {
+				FlipperObject next = dispatcher.getLink(choosenIndex);
 				logger.debug(name + " Found available BUFU via " + next.name);
 				queue.peek().setDispatched(true);
-				queue.peek().setTarget(next);
+				queue.peek().setTargetIndex(choosenIndex);
 			}
 		}
 	}
@@ -71,6 +74,16 @@ public class Buffer extends Clickable {
 				soundPlayer.register(Sound.MissedNotInterestingFragments);
 			}
 		}
+	}
+
+	@Override
+	protected void reserve() {
+		Data data = queue.peek();
+		int reservedIndex = data.getTargetIndex();
+		FlipperObject target = dispatcher.getTarget(reservedIndex);
+		FlipperObject link = dispatcher.getLink(reservedIndex);
+		target.setBusy(true);
+		data.setTarget(link);
 	}
 
 }
