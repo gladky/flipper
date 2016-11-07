@@ -40,9 +40,9 @@ public abstract class FlowObserver {
 
 	private Map<Integer, Integer> lengths;
 
-	public FlowObserver(FlipperGame flipperGame, int minWidth, int width, int switchWidth, int storageWidth, int soundWidth,int bufferWidth)
-	{
-		
+	public FlowObserver(FlipperGame flipperGame, int minWidth, int width, int switchWidth, int storageWidth,
+			int soundWidth, int bufferWidth) {
+
 		this.MIN_WIDTH = minWidth;
 		this.WIDTH = width;
 		this.SWITCH_WIDTH = switchWidth;
@@ -114,7 +114,7 @@ public abstract class FlowObserver {
 					lengths.put(i, SWITCH_WIDTH);
 				} else if (object instanceof Link) {
 					lengths.put(i, MIN_WIDTH);
-				}else if (object instanceof Buffer) {
+				} else if (object instanceof Buffer) {
 					lengths.put(i, BUFFER_WIDTH);
 				} else {
 					lengths.put(i, WIDTH);
@@ -195,10 +195,10 @@ public abstract class FlowObserver {
 				result = getState(observedButtonObject);
 			} else if (observedObject instanceof Dispatcher) {
 				Dispatcher dispatcher = (Dispatcher) observedObject;
-				FlipperObject target = dispatcher.getResult();
+				int target = dispatcher.getResult();
 				String data = "";
-				if (target != null) {
-					data += target.getName();
+				if(target != -1){
+					data += target;
 				}
 				if (dispatcher.isBackpressure()) {
 					data += "BP";

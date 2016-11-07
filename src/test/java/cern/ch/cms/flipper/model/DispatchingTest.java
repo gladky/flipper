@@ -55,31 +55,32 @@ public class DispatchingTest {
 
 	FlipperObject[] objects;
 	private Logger logger = Logger.getLogger(DispatchingTest.class);
+	private static final SoundPlayer sp = new SoundPlayer("sp");
 
 	@Before
 	public void initializeFlipperObjects() {
 
-		level1Button = new Button("[L1-button]");
-		leftHLTButton = new Button("test-button-bufu-1");
-		rightHLTButton = new Button("test-button-bufu-1");
+		level1Button = new Button("[L1-button]", sp);
+		leftHLTButton = new Button("test-button-bufu-1", sp);
+		rightHLTButton = new Button("test-button-bufu-1", sp);
 
-		buffer1 = new Buffer("[buffer1]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
-		buffer2 = new Buffer("[buffer2]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
-		buffer3 = new Buffer("[buffer3]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
-		buffer4 = new Buffer("[buffer4]", 12, 20, 10, level1Button, new SoundPlayer("sp"),true);
+		buffer1 = new Buffer("[buffer1]", 12, 20, 10, level1Button, sp, true);
+		buffer2 = new Buffer("[buffer2]", 12, 20, 10, level1Button, sp, true);
+		buffer3 = new Buffer("[buffer3]", 12, 20, 10, level1Button, sp, true);
+		buffer4 = new Buffer("[buffer4]", 12, 20, 10, level1Button, sp, true);
 
-		switch_ = Mockito.spy(new Switch("[test-switch]", new SoundPlayer("sp")));
+		switch_ = Mockito.spy(new Switch("[test-switch]", sp));
 
-		link1 = new Link("[buffer-switch-link-1]", 1, 25, new SoundPlayer("sp"));
-		link2 = new Link("[buffer-switch-link-2]", 1, 25, new SoundPlayer("sp"));
-		link3 = new Link("[buffer-switch-link-3]", 1, 25, new SoundPlayer("sp"));
-		link4 = new Link("[buffer-switch-link-4]", 1, 25, new SoundPlayer("sp"));
+		link1 = new Link("[buffer-switch-link-1]", 1, 25, sp);
+		link2 = new Link("[buffer-switch-link-2]", 1, 25, sp);
+		link3 = new Link("[buffer-switch-link-3]", 1, 25, sp);
+		link4 = new Link("[buffer-switch-link-4]", 1, 25, sp);
 
-		link5 = new Link("[switch-bufu-link-left]", 1, 25, new SoundPlayer("sp"));
-		link6 = new Link("[switch-bufu-link-right]", 1, 25, new SoundPlayer("sp"));
+		link5 = new Link("[switch-bufu-link-left]", 1, 25, sp);
+		link6 = new Link("[switch-bufu-link-right]", 1, 25, sp);
 
-		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 5, 25, leftHLTButton, new SoundPlayer("sp")));
-		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 5, 25, rightHLTButton, new SoundPlayer("sp")));
+		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 5, 25, leftHLTButton, sp));
+		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 5, 25, rightHLTButton, sp));
 
 		buffer1.getSuccessors().add(link1);
 		buffer2.getSuccessors().add(link2);
@@ -97,7 +98,8 @@ public class DispatchingTest {
 		link5.getSuccessors().add(bufu1);
 		link6.getSuccessors().add(bufu2);
 
-		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link5, link6), new SoundPlayer("sp"));
+		Dispatcher dispatcher = new Dispatcher(Arrays.asList(bufu1, bufu2), Arrays.asList(link5, link6),
+				new SoundPlayer("sp"));
 		buffer1.setDispatcher(dispatcher);
 		buffer2.setDispatcher(dispatcher);
 		buffer3.setDispatcher(dispatcher);

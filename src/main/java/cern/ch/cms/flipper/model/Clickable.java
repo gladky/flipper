@@ -49,8 +49,8 @@ public abstract class Clickable extends IndividualPogressObject {
 			logger.info(name + " accepted the data " + queue.peek().getName() + " in time");
 			//data.setTimeOutProgress(0);
 			boolean canSend = super.canSend();
-			if (canSend) {
-				
+			if(canSend){
+				//dispatch(true);
 			}
 			return canSend;
 		} else {
@@ -83,7 +83,13 @@ public abstract class Clickable extends IndividualPogressObject {
 
 	@Override
 	protected void sendData() {
+
+		reserve();
 		super.sendData();
 		this.accepted = false;
+	}
+
+	protected void reserve() {
+		
 	}
 }

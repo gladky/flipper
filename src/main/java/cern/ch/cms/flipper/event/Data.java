@@ -11,6 +11,8 @@ public abstract class Data {
 	private boolean dispatched;
 
 	private FlipperObject target;
+	
+	private int targetIndex;
 
 	private final String name;
 
@@ -79,6 +81,14 @@ public abstract class Data {
 
 	public void setTimeOutProgress(int timeOutProgress) {
 		this.timeOutProgress = timeOutProgress;
+	}
+
+	public int getTargetIndex() {
+		return targetIndex;
+	}
+
+	public void setTargetIndex(int targetIndex) {
+		this.targetIndex = targetIndex;
 	}
 
 }

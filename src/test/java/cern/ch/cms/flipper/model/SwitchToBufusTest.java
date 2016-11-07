@@ -22,6 +22,7 @@ import cern.ch.cms.flipper.sounds.SoundPlayer;
  *
  */
 public class SwitchToBufusTest {
+	private static final SoundPlayer sp = new SoundPlayer("sp");
 
 	FlipperObject switchSpy;
 
@@ -36,11 +37,11 @@ public class SwitchToBufusTest {
 	public void initializeFlipperObjects() {
 		switchSpy = Mockito.spy(new Switch("[test-switch]", new SoundPlayer("sp")));
 
-		link1 = new Link("[test-link-1]", 1, 25, new SoundPlayer("sp"));
-		link2 = new Link("[test-link-2]", 1, 25, new SoundPlayer("sp"));
+		link1 = new Link("[test-link-1]", 1, 25, sp);
+		link2 = new Link("[test-link-2]", 1, 25, sp);
 
-		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 10, 25, new Button("[test-button-1]"), new SoundPlayer("sp")));
-		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 10, 25, new Button("[test-button-2]"), new SoundPlayer("sp")));
+		bufu1 = Mockito.spy(new BUFU("[test-bufu-1]", 10, 25, new Button("[test-button-1]", sp), sp));
+		bufu2 = Mockito.spy(new BUFU("[test-bufu-2]", 10, 25, new Button("[test-button-2]", sp), sp));
 
 		switchSpy.getSuccessors().add(link1);
 		switchSpy.getSuccessors().add(link2);

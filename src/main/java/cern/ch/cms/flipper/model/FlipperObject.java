@@ -126,7 +126,7 @@ public abstract class FlipperObject extends NamedObject {
 	protected void sendData() {
 		Data data = queue.poll();
 		if (data.isDispatched()) {
-			logger.info("Sending dispatched data " + data.getName() + "  to target " + data.getTarget().getName());
+			logger.info("Sending dispatched data " + data.getName() + "  to target " + data.getTarget());
 		}
 		logger.trace(name + " removing data " + data.getName() + " from queue, now size is: " + queue.size());
 

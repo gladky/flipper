@@ -11,10 +11,12 @@ import cern.ch.cms.flipper.sounds.SoundPlayer;
 
 public class FlipperObjectTest {
 
+	private static final SoundPlayer sp = new SoundPlayer("sp");
+
 	@Test
 	public void acceptTest() {
-		FlipperObject link = new Link("test-link", 1, 25, new SoundPlayer("sp"));
-		FlipperObject storage = new Storage("[storage]", 10, new SoundPlayer("sp"));
+		FlipperObject link = new Link("test-link", 1, 25, sp);
+		FlipperObject storage = new Storage("[storage]", 10, sp);
 		link.getSuccessors().add(storage);
 		FlipperObject[] objects = { storage, link };
 
@@ -61,8 +63,8 @@ public class FlipperObjectTest {
 
 	@Test
 	public void forceInsertTest() {
-		FlipperObject link = new Link("test-link", 1, 25, new SoundPlayer("sp"));
-		FlipperObject storage = new Storage("[storage]", 10, new SoundPlayer("sp"));
+		FlipperObject link = new Link("test-link", 1, 25, sp);
+		FlipperObject storage = new Storage("[storage]", 10, sp);
 		link.getSuccessors().add(storage);
 		Data f1 = new Fragment();
 		Data f2 = new Fragment();
@@ -79,9 +81,9 @@ public class FlipperObjectTest {
 
 	@Test
 	public void linksDontWorkAsBuffers() {
-		Button button = new Button("[test-button]");
-		FlipperObject link = new Link("[test-link]", 1, 25, new SoundPlayer("sp"));
-		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button, new SoundPlayer("sp"));
+		Button button = new Button("[test-button]", sp);
+		FlipperObject link = new Link("[test-link]", 1, 25, sp);
+		FlipperObject bufu = new BUFU("[test-bufu]", 20, 25, button, sp);
 		link.getSuccessors().add(bufu);
 
 		FlipperObject[] objects = { bufu, link };
