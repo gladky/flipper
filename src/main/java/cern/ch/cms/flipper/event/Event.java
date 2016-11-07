@@ -1,12 +1,7 @@
 package cern.ch.cms.flipper.event;
 
-import java.util.logging.Logger;
-
-import cern.ch.cms.flipper.NameGenerator;
-
 public class Event extends Data {
 
-	//private static final Logger logger = Logger.getLogger(Event.class);
 
 	/**
 	 * Main constructor of Event
@@ -26,12 +21,7 @@ public class Event extends Data {
 	}
 
 	private static String generateSimpleName(Data d) {
-		// FIXME: for the prod. do NOT use NameGenerator (its for debugging)
-		// String name = "e" + d.getName();
-		String name = NameGenerator.generateSimpleName(d.getName());
-
-		//logger.debug("Generated name is: " + name);
-
+		String name = "e" + d.getName();
 		return name;
 	}
 
