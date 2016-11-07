@@ -5,8 +5,6 @@ import java.util.Arrays;
 import org.apache.log4j.Logger;
 
 import cern.ch.cms.flipper.controllers.Button;
-import cern.ch.cms.flipper.event.Data;
-import cern.ch.cms.flipper.event.Fragment;
 import cern.ch.cms.flipper.model.Buffer;
 import cern.ch.cms.flipper.model.Dispatcher;
 import cern.ch.cms.flipper.model.FlipperObject;
@@ -201,7 +199,7 @@ public class FlipperGame {
 		link48.getSuccessors().add(storage);
 
 		/* FIXME: Use this line for debugging, In production remove it */
-		controller.observer = new StateObserver(this);
+		controller.observer = new DataObserver(this);
 
 		fragmentGenerator = new FragmentGenerator(link11, link12, link13, link14);
 
