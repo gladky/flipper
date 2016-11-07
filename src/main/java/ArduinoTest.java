@@ -7,7 +7,7 @@ public class ArduinoTest {
 		FlipperGame flipperGame = new FlipperGame();
 
 		for (int i = 0; i < 250; i++) {
-			if (i % 10 == 0 && i < 200) {
+			if (i % 4 == 0 && i < 200) {
 				flipperGame.generateNewFragments();
 
 			}
