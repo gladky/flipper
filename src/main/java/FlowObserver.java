@@ -1,5 +1,4 @@
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,7 +18,7 @@ public abstract class FlowObserver {
 
 	private List<NamedObject> observedObjects;
 
-	private List<Map<String, String>> states;
+	private List<List<String>> states;
 
 	private Map<Integer, Integer> lengths;
 
@@ -32,7 +31,7 @@ public abstract class FlowObserver {
 		this.STORAGE_WIDTH = storageWidth;
 		this.SOUND_WIDTH = soundWidth;
 		this.BUFFER_WIDTH = bufferWidth;
-		this.states = new ArrayList<Map<String, String>>();
+		this.states = new ArrayList<List<String>>();
 		this.observedObjects = new ArrayList<NamedObject>();
 
 		observedObjects.add(flipperGame.link11);
@@ -163,7 +162,7 @@ public abstract class FlowObserver {
 	}
 
 	public void persist() {
-		Map<String, String> currentState = new LinkedHashMap<String, String>();
+		List<String> currentState = new ArrayList<String>();
 
 		for (NamedObject observedObject : observedObjects) {
 
@@ -202,7 +201,7 @@ public abstract class FlowObserver {
 				result = Pair.of("X", "?");
 			}
 
-			currentState.put(result.getLeft(), result.getRight());
+			currentState.add(result.getRight());
 
 		}
 
@@ -231,7 +230,7 @@ public abstract class FlowObserver {
 
 		sb.append("\n");
 		int i = 0;
-		for (Map<String, String> state : states) {
+		for (List<String> state : states) {
 
 			String step = fixedLengthString(i + "", WIDTH);
 
@@ -249,15 +248,15 @@ public abstract class FlowObserver {
 
 	}
 
-	private String toString(Map<String, String> row) {
+	private String toString(List<String> row) {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("|");
 
 		int i = 0;
-		for (Entry<String, String> entry : row.entrySet()) {
+		for (String entry : row) {
 
-			String curr = fixedLengthString(entry.getValue(), lengths.get(i));
+			String curr = fixedLengthString(entry, lengths.get(i));
 
 			sb.append(curr);
 			sb.append("|");
